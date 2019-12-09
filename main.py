@@ -10,10 +10,67 @@ code_in_rpi = False
 white = (255,255,255)
 red = (255,0,0)
 green = (0,255,0)
-key = louvain
-code = []
+key = "louvain"
+message = []
 value = 0
 
+sense.clear()
+sense.show_message("test")
+sense.show_letter(str(value))
+
+def WriteAndEncode(message):
+    str(message)
+    f = open("message", "w+")
+    f.write(encode(key,"".join(message)))
+    f.close()
+
+
+def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffrement vigenere
+    enc = []
+    for i, e in enumerate(plain_text):
+        key_c = key[i % len(key)]
+        enc_c = chr((ord(e) + ord(key_c)) % 256)
+        enc.append(enc_c)
+    return ("".join(enc).encode()).decode()
+
+def Up(event):
+        global value
+        if event.action != ACTION_RELEASED:
+            value += 1
+            if value < 0: value=9
+            if value > 9: value=0
+            sense.show_letter(str(value))
+
+def Down(event):
+    global value
+    if event.action != ACTION_RELEASED:
+        value -= 1
+        if value < 0: value=9
+        if value > 9: value=0
+        sense.show_letter(str(value))
+
+def Select(event):
+    global value
+    if event.action != ACTION_PRESSED:
+        if event.action == ACTION_RELEASED:
+            sense.show_letter(str(value), back_colour = green)
+            message.append(str(value))
+            sleep(0.2)
+            sense.show_letter(str(value))
+        else:
+            sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+            WriteAndEncode(message)
+            
+sense.stick.direction_up = Up
+sense.stick.direction_down = Down
+sense.stick.direction_left = Down
+sense.stick.direction_right = Up
+sense.stick.direction_middle = Select
+pause()
+
+
+
+"""
 def hashing(string): #fonction hachant la clef
     def to_32(value):
         value = value % (2 ** 32)
@@ -42,124 +99,122 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
     return ("".join(enc).encode()).decode()
 
 def CheckCode():
-	#permet de verifier si il existe deja un code meme apres avoir eteinds le rpi
-	#return True si un code est present
-	return False 
+    #permet de verifier si il existe deja un code meme apres avoir eteinds le rpi
+    #return True si un code est present
+    return False 
 
 def GyroCode():
-	liste_action = [] #liste de stockage des positions dans l espace
-	tourne = True
-	while tourne :
-	    sense.show_letter(str(len(liste_action)))
-	    event = sense.stick.wait_for_event()
-	    if event.action == "pressed" and event.direction == "middle" : #pression sur le joystick pour ajouter une position
-	        x = round(sense.get_accelerometer_raw()["x"])
-	        y = round(sense.get_accelerometer_raw()["y"])
-	        z = round(sense.get_accelerometer_raw()["z"])
-	        if y == 0 and x == 0 and z == 1 :
-	            action = "Nothing"
-	            liste_action.append(action)
-	        if y == 0 and x == -1 and z == 0 :
-	            action = "turnleft"
-	            liste_action.append(action)
-	        if y == 0 and x == -1 and z == -1 :
-	            action = "flipleft"
-	            liste_action.append(action)
-	        if y == 0 and x == 1 and z == 0 :
-	            action = "turnright"
-	            liste_action.append(action)
-	        if y == 0 and x == 1 and z == -1 :
-	            action = "flipright"
-	            liste_action.append(action)
-	        if y == 1 and x == 0 and z == 0 :
-	            action = "turnbackward"
-	            liste_action.append(action)
-	        if y == -1 and x == 0 and z == 0 :
-	            action = "turnforward"
-	            liste_action.append(action)
-	        if y == 0 and x == 0 and z == -1 :
-	            action = "flipbackward"
-	            liste_action.append(action) 
-	    if event.action == "held" and event.direction == "middle" :
-	        sense.show_message("Valider?",scroll_speed = 0.05)
-	        conserver = True
-	        validation = True
-	        delete = False
-	        while validation :
-	            while conserver :
-	                sense.show_letter("V",(0, 255, 0))
-	                for event in sense.stick.get_events(): # Si on valide en appuyant au milieu, le message sera conserve, une autre action proposera le x
-	                    if event.action == 'pressed' and event.direction == "middle":
-	                        tourne = False
-	                        conserver = False
-	                        validation = False
-	                        sense.clear()
-	                        f= open("key.txt","w") #ouvre le document message.txt
-	                        f.write(hashing("".join(liste_action))) #ecrit la clef hashee
-	                        f.close()
-	                    if event.action == "pressed" and event.direction != "middle" :
-	                        conserver = False
-	                        delete = True
-	            while delete :
-	                sense.show_letter("X",(255, 0, 0))
-	                for event in sense.stick.get_events(): # Si on valide en appuyant au milieu, le message sera supprime, une autre action recommencera la bouche
-	                    if event.action == 'pressed' and event.direction == "middle":
-	                        delete = False
-	                        validation = False
-	                        sense.clear()
-	                        liste_action = []
-	                    if event.action == "pressed" and event.direction != "middle" :
-	                        conserver = True
-	                        delete = False
+    liste_action = [] #liste de stockage des positions dans l espace
+    tourne = True
+    while tourne :
+        sense.show_letter(str(len(liste_action)))
+        event = sense.stick.wait_for_event()
+        if event.action == "pressed" and event.direction == "middle" : #pression sur le joystick pour ajouter une position
+            x = round(sense.get_accelerometer_raw()["x"])
+            y = round(sense.get_accelerometer_raw()["y"])
+            z = round(sense.get_accelerometer_raw()["z"])
+            if y == 0 and x == 0 and z == 1 :
+                action = "Nothing"
+                liste_action.append(action)
+            if y == 0 and x == -1 and z == 0 :
+                action = "turnleft"
+                liste_action.append(action)
+            if y == 0 and x == -1 and z == -1 :
+                action = "flipleft"
+                liste_action.append(action)
+            if y == 0 and x == 1 and z == 0 :
+                action = "turnright"
+                liste_action.append(action)
+            if y == 0 and x == 1 and z == -1 :
+                action = "flipright"
+                liste_action.append(action)
+            if y == 1 and x == 0 and z == 0 :
+                action = "turnbackward"
+                liste_action.append(action)
+            if y == -1 and x == 0 and z == 0 :
+                action = "turnforward"
+                liste_action.append(action)
+            if y == 0 and x == 0 and z == -1 :
+                action = "flipbackward"
+                liste_action.append(action) 
+        if event.action == "held" and event.direction == "middle" :
+            sense.show_message("Valider?",scroll_speed = 0.05)
+            conserver = True
+            validation = True
+            delete = False
+            while validation :
+                while conserver :
+                    sense.show_letter("V",(0, 255, 0))
+                    for event in sense.stick.get_events(): # Si on valide en appuyant au milieu, le message sera conserve, une autre action proposera le x
+                        if event.action == 'pressed' and event.direction == "middle":
+                            tourne = False
+                            conserver = False
+                            validation = False
+                            sense.clear()
+                            f= open("key.txt","w") #ouvre le document message.txt
+                            f.write(hashing("".join(liste_action))) #ecrit la clef hashee
+                            f.close()
+                        if event.action == "pressed" and event.direction != "middle" :
+                            conserver = False
+                            delete = True
+                while delete :
+                    sense.show_letter("X",(255, 0, 0))
+                    for event in sense.stick.get_events(): # Si on valide en appuyant au milieu, le message sera supprime, une autre action recommencera la bouche
+                        if event.action == 'pressed' and event.direction == "middle":
+                            delete = False
+                            validation = False
+                            sense.clear()
+                            liste_action = []
+                        if event.action == "pressed" and event.direction != "middle" :
+                            conserver = True
+                            delete = False
+
+def Up(event):
+        global value
+        if event.action != ACTION_RELEASED:
+            value += 1
+            if value < 0: value=9
+            if value > 9: value=0
+            sense.show_letter(str(value))
+
+def Down(event):
+    global value
+    if event.action != ACTION_RELEASED:
+        value -= 1
+        if value < 0: value=9
+        if value > 9: value=0
+        sense.show_letter(str(value))
+
+def Select(event):
+    global value
+    if event.action != ACTION_PRESSED:
+        if event.action == ACTION_RELEASED:
+            sense.show_letter(str(value), back_colour = green)
+            code.append(str(value))
+            sleep(0.2)
+            sense.show_letter(str(value))
+            GyroCode()
+        else:
+            f.write(encode(key,"".join(code)))
+            f.write(code)
+            f.close()
+            sense.clear()
+            code_in_rpi = True
+
 
 def CodeInRpi(code_in_rpi):
-
-	def Up(event):
-		    global value
-		    if event.action != ACTION_RELEASED:
-		        value += 1
-		        if value < 0: value=9
-		        if value > 9: value=0
-		        sense.show_letter(str(value))
-
-	def Down(event):
-	    global value
-	    if event.action != ACTION_RELEASED:
-	        value -= 1
-	        if value < 0: value=9
-	        if value > 9: value=0
-	        sense.show_letter(str(value))
-
-	def Select(event):
-	    global value
-	    if event.action != ACTION_PRESSED:
-	        if event.action == ACTION_RELEASED:
-	            sense.show_letter(str(value), back_colour = green)
-	            code.append(str(value))
-	            sleep(0.2)
-	            sense.show_letter(str(value))
-	            GyroCode()
-	        else:
-                f.write(encode(key,"".join(code))) 
-	            f.write(code)
-	            f.close()
-	            sense.clear()
-	            code_in_rpi == True
-	            return code_in_rpi
-
     if code_in_rpi == False:
         sense.show_message("No code, insert the new code", text_colour=white, back_colour=red, scroll_speed=0.05)
-		sense.show_letter(str(value))
-
-		sense.stick.direction_up = Up
-		sense.stick.direction_down = Down
-		sense.stick.direction_left = Down
-		sense.stick.direction_right = Up
-		sense.stick.direction_middle = Select
-		pause()
-
+        sense.show_letter(str(value))
+        sense.stick.direction_up = Up
+        sense.stick.direction_down = Down
+        sense.stick.direction_left = Down
+        sense.stick.direction_right = Up
+        sense.stick.direction_middle = Select
+        pause()
 
     else:
         sense.show_message("Code inside RPI, enter password", text_colour=white, back_colour=green, scroll_speed=0.05)
         CheckGyroCode()
+"""
 
