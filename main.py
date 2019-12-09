@@ -15,7 +15,6 @@ code = []
 value = 0
 
 def hashing(string): #fonction hachant la clef
-    
     def to_32(value):
         value = value % (2 ** 32)
         if value >= 2**31:
@@ -35,7 +34,6 @@ def hashing(string): #fonction hachant la clef
     return ""
 
 def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffrement vigenere
-    
     enc = []
     for i, e in enumerate(plain_text):
         key_c = key[i % len(key)]
@@ -115,11 +113,8 @@ def GyroCode():
 	                        delete = False
 
 def CodeInRpi(code_in_rpi):
-    if code_in_rpi == False:
-        sense.show_message("No code, insert the new code", text_colour=white, back_colour=red, scroll_speed=0.05)
-		sense.show_letter(str(value))
 
-		def Up(event):
+	def Up(event):
 		    global value
 		    if event.action != ACTION_RELEASED:
 		        value += 1
@@ -127,32 +122,34 @@ def CodeInRpi(code_in_rpi):
 		        if value > 9: value=0
 		        sense.show_letter(str(value))
 
-		def Down(event):
-		    global value
-		    if event.action != ACTION_RELEASED:
-		        value -= 1
-		        if value < 0: value=9
-		        if value > 9: value=0
-		        sense.show_letter(str(value))
+	def Down(event):
+	    global value
+	    if event.action != ACTION_RELEASED:
+	        value -= 1
+	        if value < 0: value=9
+	        if value > 9: value=0
+	        sense.show_letter(str(value))
 
-		def Select(event):
-		    global value
-		    if event.action != ACTION_PRESSED:
-		        if event.action == ACTION_RELEASED:
-		            sense.show_letter(str(value), back_colour = green)
-		            code.append(str(value))
-		            sleep(0.2)
-		            sense.show_letter(str(value))
-		            GyroCode()
-		        else:
-	                f.write(encode(key,"".join(code))) #ecrit le message chiffre 
-		            f.write(code)
-		            f.close()
-		            sense.clear()
-		            code_in_rpi == True
-		            return code_in_rpi
+	def Select(event):
+	    global value
+	    if event.action != ACTION_PRESSED:
+	        if event.action == ACTION_RELEASED:
+	            sense.show_letter(str(value), back_colour = green)
+	            code.append(str(value))
+	            sleep(0.2)
+	            sense.show_letter(str(value))
+	            GyroCode()
+	        else:
+                f.write(encode(key,"".join(code))) 
+	            f.write(code)
+	            f.close()
+	            sense.clear()
+	            code_in_rpi == True
+	            return code_in_rpi
 
-
+    if code_in_rpi == False:
+        sense.show_message("No code, insert the new code", text_colour=white, back_colour=red, scroll_speed=0.05)
+		sense.show_letter(str(value))
 
 		sense.stick.direction_up = Up
 		sense.stick.direction_down = Down
