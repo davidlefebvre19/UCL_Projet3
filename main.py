@@ -101,11 +101,14 @@ def ReadInput():
                 sense.show_letter(str(value))
             else:
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+                """
                 confirmed = librarie.confirmer()
                 if confirmed:
                     return True
                 else:
                     return False
+                """
+                return True
 
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
