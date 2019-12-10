@@ -82,7 +82,7 @@ def confirmer():
     def Down(event):
         global i
         if event.action != ACTION_RELEASED:
-            i += 1
+            i -= 1
             if i>1: i=0
             if i<1: i=1
             if i == 1:
