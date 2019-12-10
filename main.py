@@ -118,7 +118,12 @@ def ReadInput():
         if event.action == "held" and event.direction == "middle":
             sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
             return True
-        if event.action == "press" and event.direction == "left":
+        if event.action == "pressed" and event.direction == "middle":
+            sense.show_letter(str(value), back_colour = green)
+            message.append(str(value))
+            sleep(0.2)
+            sense.show_letter(str(value)
+        if event.action == "pressed" and event.direction == "left":
             value -= 1
             if value < 0: value=9
             if value > 9: value=0
