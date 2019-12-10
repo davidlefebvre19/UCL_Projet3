@@ -4,6 +4,7 @@ sense.low_light = True
 from time import sleep
 from signal import pause
 from subprocess import call
+i = 0
 
 def confirmer():
     #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
