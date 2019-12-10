@@ -5,6 +5,8 @@ from time import sleep
 from signal import pause
 from subprocess import call
 
+call("cd beta_p3 && rm UCL_Projet3 && git clone https://github.com/davidlefebvre19/UCL_Projet3.git", Shell=True)
+
 #9Q4hr6iM
 
 code_in_rpi = False
@@ -88,7 +90,7 @@ def confirmer():
 
     def Select(event):
             if event.action == ACTION_RELEASED:
-                if i == 0
+                if i == 0:
                     sense.show_letter("V", back_colour = green)
                     return True
                 else:
