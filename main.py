@@ -4,9 +4,6 @@ sense.low_light = True
 from time import sleep
 from signal import pause
 from subprocess import call
-
-call("cd beta_p3 && rm UCL_Projet3 && git clone https://github.com/davidlefebvre19/UCL_Projet3.git", Shell=True)
-
 #9Q4hr6iM
 
 code_in_rpi = False
