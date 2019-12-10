@@ -105,6 +105,7 @@ def ReadInput():
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
 
     while returning == True:
+        print("3")
         return True
 
     sense.stick.direction_up = Up
@@ -119,7 +120,7 @@ print("1")
 if not ReadMessage():
     print("2")
     if ReadInput():
-        print("3")
-    else:
         print("4")
+    else:
+        print("5")
         call("sudo shutdown now", shell=True)
