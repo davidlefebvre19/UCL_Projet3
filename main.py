@@ -122,7 +122,7 @@ def ReadInput():
             sense.show_letter(str(value), back_colour = green)
             message.append(str(value))
             sleep(0.2)
-            sense.show_letter(str(value)
+            sense.show_letter(str(value))
         if event.action == "pressed" and event.direction == "left":
             value -= 1
             if value < 0: value=9
