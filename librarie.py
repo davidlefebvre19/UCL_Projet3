@@ -30,7 +30,6 @@ def confirmer():
             i -= 1
             if i>1: i=0
             if i<1: i=1
-            if i == 1:
             sense.show_letter(l[i])
 
 
