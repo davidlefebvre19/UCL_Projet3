@@ -147,11 +147,7 @@ def ReadInput():
                 sense.show_letter(str(value))
             else:
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-                if confirmer():
-                    WriteAndEncode(message)
-                    call("python3 GyroIn.py", shell=True)
-                else:
-                    call("sudo shutdown now", shell=True)
+                return True
          
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
@@ -162,6 +158,8 @@ def ReadInput():
 
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 if ReadMessage():
-    call("python3 GyroOut.py", shell=True)
-else:
-    ReadInput()
+    if ReadInput():
+        if confirmer():
+            call("python3 GyroIn", shell=True)
+        else:
+            call("sudo shutdown now", shell=True)
