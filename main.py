@@ -12,7 +12,6 @@ red = (255,0,0)
 green = (0,255,0)
 key = "louvain"
 message = []
-value = 0
 i = 0
 
 sense.clear()
@@ -67,6 +66,7 @@ def ReadInput():
     Elle permet d'offrir une interface a l'utilisateur afin qu'il rentre le message a crypter
     Si l'utilisateur confirme le message, le fichier GyroIn, permettant d'entrer un code, est appelle.
     """
+    value = 0
     sense.show_message("Hello Kormrade", text_colour=white, back_colour=red, scroll_speed=0.005)
     sense.show_letter(str(value))
     """
