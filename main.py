@@ -67,9 +67,9 @@ def ReadInput():
     Elle permet d'offrir une interface a l'utilisateur afin qu'il rentre le message a crypter
     Si l'utilisateur confirme le message, le fichier GyroIn, permettant d'entrer un code, est appelle.
     """
-    returning = False
     sense.show_message("Hello Kormrade", text_colour=white, back_colour=red, scroll_speed=0.005)
     sense.show_letter(str(value))
+    """
     def Up(event):
         #si l'utilisateur pousse le joystick vers le haut ou vers la droite, on incrmante 1 au compteur
         #la valeur du compteur est toujours comprise dans l'intervalle ferme [0,9].
@@ -104,12 +104,6 @@ def ReadInput():
                 return True
                 print("2.5")
 
-    while joystick:
-        event = sense.stick.wait_for_event()
-        if event.action == "held" and event.direction == "middle":
-            sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-            return True
-
 
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
@@ -117,6 +111,38 @@ def ReadInput():
     sense.stick.direction_right = Up
     sense.stick.direction_middle = Select
     pause()
+    """
+
+    while joystick:
+        event = sense.stick.wait_for_event()
+        if event.action == "held" and event.direction == "middle":
+            sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+            return True
+        if event.action == "press" and event.direction == "left"
+            global value
+            value -= 1
+            if value < 0: value=9
+            if value > 9: value=0
+            sense.show_letter(str(value))
+        if event.action == "press" and event.direction == "right"
+            global value
+            value += 1
+            if value < 0: value=9
+            if value > 9: value=0
+            sense.show_letter(str(value))
+        if event.action == "press" and event.direction == "up"
+            global value
+            value += 1
+            if value < 0: value=9
+            if value > 9: value=0
+            sense.show_letter(str(value))
+        if event.action == "press" and event.direction == "down"
+            global value
+            value -= 1
+            if value < 0: value=9
+            if value > 9: value=0
+            sense.show_letter(str(value))
+
 
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 print("1")
