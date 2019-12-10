@@ -12,10 +12,7 @@ green = (0,255,0)
 def confirmer():
     #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
     #:return (boolean) True si l'utilisateur choisit "V" et inversement
-    if i == 1:
-        sense.show_letter("F", text_colour=red)
-    else:
-        sense.show_letter("V", text_colour=green)
+
 
     def Up(event):
         global i
@@ -49,7 +46,6 @@ def confirmer():
                 sense.show_letter("F", back_colour = red)
                 print("shit")
                 return False
-                print("wtf")
 
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
