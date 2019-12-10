@@ -4,6 +4,7 @@ sense.low_light = True
 from time import sleep
 from signal import pause
 from subprocess import call
+import librarie
 #9Q4hr6iM
 
 code_in_rpi = False
@@ -60,53 +61,6 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
         enc.append(enc_c)
     return ("".join(enc).encode()).decode()
 
-def confirmer():
-    #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
-    #:return (boolean) True si l'utilisateur choisit "V" et inversement
-    if i == 1:
-        sense.show_letter("F", text_colour=red)
-    else:
-        sense.show_letter("V", text_colour=green)
-
-    def Up(event):
-        global i
-        if event.action != ACTION_RELEASED:
-            i += 1
-            if i>1: i=0
-            if i<1: i=1
-            if i == 1:
-                sense.show_letter("F", text_colour=red)
-            else:
-                sense.show_letter("V", text_colour=green)
-
-    def Down(event):
-        global i
-        if event.action != ACTION_RELEASED:
-            i -= 1
-            if i>1: i=0
-            if i<1: i=1
-            if i == 1:
-                sense.show_letter("F", text_colour=red)
-            else:
-                sense.show_letter("V", text_colour=green)
-
-    def Select(event):
-        global i
-        if event.action == ACTION_RELEASED:
-            if i == 0:
-                sense.show_letter("V", back_colour = green)
-                return True
-            else:
-                sense.show_letter("F", back_colour = red)
-                return False
-
-    sense.stick.direction_up = Up
-    sense.stick.direction_down = Down
-    sense.stick.direction_left = Down
-    sense.stick.direction_right = Up
-    sense.stick.direction_middle = Select
-    pause()
-
 def ReadInput():
     """
     Cette fonction guette les mouvements effectue sur le joystick
@@ -147,9 +101,12 @@ def ReadInput():
                 sense.show_letter(str(value))
             else:
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-                confirmed = confirmer()
-                return True
-         
+                confirmed = librarie.confirmer()
+                if confirmed:
+                    return True
+                else:
+                    return False
+
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
     sense.stick.direction_left = Down
@@ -160,7 +117,6 @@ def ReadInput():
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 if not ReadMessage():
     if ReadInput():
-        if confirmer():
-            call("python3 GyroIn", shell=True)
-        else:
-            call("sudo shutdown now", shell=True)
+        call("python3 GyroIn", shell=True)
+    else:
+        call("sudo shutdown now", shell=True)
