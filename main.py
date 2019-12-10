@@ -13,6 +13,7 @@ green = (0,255,0)
 key = "louvain"
 message = []
 value = 0
+i = 0
 
 sense.clear()
 
@@ -62,7 +63,6 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
 def confirmer():
     #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
     #:return (boolean) True si l'utilisateur choisit "V" et inversement
-    i = 1
     if i == 1:
         sense.show_letter("F", text_colour=red)
     else:
