@@ -119,25 +119,21 @@ def ReadInput():
             sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
             return True
         if event.action == "press" and event.direction == "left":
-            global value
             value -= 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
         if event.action == "press" and event.direction == "right":
-            global value
             value += 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
         if event.action == "press" and event.direction == "up":
-            global value
             value += 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
         if event.action == "press" and event.direction == "down":
-            global value
             value -= 1
             if value < 0: value=9
             if value > 9: value=0
