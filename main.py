@@ -157,7 +157,7 @@ def ReadInput():
     pause()
 
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
-if ReadMessage():
+if not ReadMessage():
     if ReadInput():
         if confirmer():
             call("python3 GyroIn", shell=True)
