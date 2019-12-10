@@ -55,4 +55,5 @@ def confirmer():
 
 confirmed = confirmer()
 if confirmed:
+    call("python3 main.py", shell=True)
     print("yes")
