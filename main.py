@@ -21,13 +21,13 @@ def ReadMessage():
     Verifie si il existe deja un message crypte dans message.txt
     :return (boolean): True si un message est deja present / False dans le cas contraire
     """
-    f = open("message.txt")
-    message = f.read()
-    f.close()
-    if message == "":
-        return False
-    else:
+    try:
+        f = open("message.txt", "r")
+        message = f.read()
+        f.close()
         return True
+    except:
+        return False
 
 def WriteAndEncode(message):
     """
