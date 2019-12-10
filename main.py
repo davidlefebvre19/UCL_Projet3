@@ -113,7 +113,7 @@ def ReadInput():
     Elle permet d'offrir une interface a l'utilisateur afin qu'il rentre le message a crypter
     Si l'utilisateur confirme le message, le fichier GyroIn, permettant d'entrer un code, est appelle.
     """
-    sense.show_message("Hello Kormrade", text_colour=white, back_colour=red, scroll_speed=0.05)
+    sense.show_message("Hello Kormrade", text_colour=white, back_colour=red, scroll_speed=0.005)
     sense.show_letter(str(value))
     def Up(event):
         #si l'utilisateur pousse le joystick vers le haut ou vers la droite, on incrmante 1 au compteur
@@ -147,6 +147,7 @@ def ReadInput():
                 sense.show_letter(str(value))
             else:
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+                confirmed = confirmer()
                 return True
          
     sense.stick.direction_up = Up
