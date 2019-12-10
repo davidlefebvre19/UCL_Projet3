@@ -25,7 +25,7 @@ def ReadMessage():
     f = open("message.txt")
     message = f.read()
     f.close()
-    if message = "":
+    if message == "":
         return False
     else:
         return True
