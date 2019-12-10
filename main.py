@@ -123,21 +123,22 @@ def ReadInput():
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
-        if event.action == "press" and event.direction == "right":
+        if event.action == "pressed" and event.direction == "right":
             value += 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
-        if event.action == "press" and event.direction == "up":
+        if event.action == "pressed" and event.direction == "up":
             value += 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
-        if event.action == "press" and event.direction == "down":
+        if event.action == "pressed" and event.direction == "down":
             value -= 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
+
 
 
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
