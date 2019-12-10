@@ -117,6 +117,8 @@ def ReadInput():
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 if not ReadMessage():
     if ReadInput():
+        print("oui")
         call("python3 GyroIn", shell=True)
     else:
+        print("non")
         call("sudo shutdown now", shell=True)
