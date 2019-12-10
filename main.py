@@ -104,10 +104,8 @@ def ReadInput():
                 returning = True
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
 
-    if returning == True:
+    while returning == True:
         return True
-
-
 
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
