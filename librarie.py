@@ -43,7 +43,7 @@ def confirmer():
                 return True
             else:
                 sense.show_letter("F", back_colour = red)
-                print("shit")
+                print("oui")
                 return False
 
     sense.stick.direction_up = Up
