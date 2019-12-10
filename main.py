@@ -105,7 +105,7 @@ def ReadInput():
                 return True
 
     listening = True           
-    while listening:
+    while listening == True:
         sense.stick.direction_up = Up
         sense.stick.direction_down = Down
         sense.stick.direction_left = Down
