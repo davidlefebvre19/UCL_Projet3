@@ -63,7 +63,7 @@ def confirmer():
     #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
     #:return (boolean) True si l'utilisateur choisit "V" et inversement
     i = 1
-    sense.show_letter(i)
+    sense.show_letter(str(i))
 
     def Up(event):
         if event.action != ACTION_RELEASED:
