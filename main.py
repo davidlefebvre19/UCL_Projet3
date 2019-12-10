@@ -103,7 +103,8 @@ def ReadInput():
             else:
                 return True
                 print("2.5")
-    
+                
+    event = sense.stick.wait_for_event()
     if event.action == "held" and event.direction == "middle":
         sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
         return True
