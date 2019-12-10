@@ -4,7 +4,6 @@ sense.low_light = True
 from time import sleep
 from signal import pause
 from subprocess import call
-import librarie
 #9Q4hr6iM
 
 code_in_rpi = False
