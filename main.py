@@ -18,6 +18,10 @@ value = 0
 sense.clear()
 
 def ReadMessage():
+    """
+    Verifie si il existe deja un message crypte dans message.txt
+    :return (boolean): True si un message est deja present / False dans le cas contraire
+    """
     f = open("message.txt")
     message = f.read()
     f.close()
@@ -27,6 +31,11 @@ def ReadMessage():
         return True
 
 def WriteAndEncode(message):
+    """
+    crypte le message dans un fichier appele message.txt
+    prends en parametre une string a crypter
+    :param (str) string contenant le message
+    """
     str(message)
     f = open("message", "w")
     f.write(encode(key,"".join(message)))
@@ -34,6 +43,16 @@ def WriteAndEncode(message):
 
 
 def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffrement vigenere
+    """
+    Chiffre un texte en utilisant une clé de chiffrement.
+    Les deux arguments sont fournis sous la forme d'une chaine de caractères.
+    L'algorithme utilisé est le chiffrement de Vigenère.
+    Attention : cette méthode est "craquée" depuis longtemps, mais elle illustre le fonctionnement d'un algorithme de chiffrement.
+
+    :param (str) key: la clé symmétrique
+    :param (str) plain_text: le texte à chiffrer
+    :return (str): le texte chiffré
+    """
     enc = []
     for i, e in enumerate(plain_text):
         key_c = key[i % len(key)]
@@ -41,17 +60,67 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
         enc.append(enc_c)
     return ("".join(enc).encode()).decode()
 
-def ReadInput():
-    sense.show_message("Hello Kormrade", text_colour=white, back_colour=red)
+def confirmer():
+    #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
+    #:return (boolean) True si l'utilisateur choisit "V" et inversement
+    i = 1
+    sense.show_letter(confirm[i])
+
     def Up(event):
-            global value
-            if event.action != ACTION_RELEASED:
-                value += 1
-                if value < 0: value=9
-                if value > 9: value=0
-                sense.show_letter(str(value))
+        if event.action != ACTION_RELEASED:
+            i += 1
+            if i>1: i=0
+            if i<1: i=1
+            if i == 1:
+                sense.show_letter("F", text_colour=red)
+            else:
+                sense.show_letter("V", text_colour=green)
 
     def Down(event):
+        if event.action != ACTION_RELEASED:
+            i += 1
+            if i>1: i=0
+            if i<1: i=1
+            if i == 1:
+                sense.show_letter("F", text_colour=red)
+            else:
+                sense.show_letter("V", text_colour=green)
+
+    def Select(event):
+            if event.action == ACTION_RELEASED:
+                if i == 0
+                    sense.show_letter("V", back_colour = green)
+                    return True
+                else:
+                    sense.show_letter("F", back_colour = red)
+                    return False
+    sense.stick.direction_up = Up
+    sense.stick.direction_down = Down
+    sense.stick.direction_left = Down
+    sense.stick.direction_right = Up
+    sense.stick.direction_middle = Select
+    pause()
+
+def ReadInput():
+    """
+    Cette fonction guette les mouvements effectue sur le joystick
+    Elle permet d'offrir une interface a l'utilisateur afin qu'il rentre le message a crypter
+    Si l'utilisateur confirme le message, le fichier GyroIn, permettant d'entrer un code, est appelle.
+    """
+    sense.show_message("Hello Kormrade", text_colour=white, back_colour=red)
+    def Up(event):
+        #si l'utilisateur pousse le joystick vers le haut ou vers la droite, on incrmante 1 au compteur
+        #la valeur du compteur est toujours comprise dans l'intervalle ferme [0,9].
+        global value
+        if event.action != ACTION_RELEASED:
+            value += 1
+            if value < 0: value=9
+            if value > 9: value=0
+            sense.show_letter(str(value))
+
+    def Down(event):
+        #si l'utilisateur pousse le joystick vers le haut ou vers la droite, on diminue de 1 le compteur
+        #la valeur du compteur est toujours comprise dans l'intervalle ferme [0,9].
         global value
         if event.action != ACTION_RELEASED:
             value -= 1
@@ -60,6 +129,8 @@ def ReadInput():
             sense.show_letter(str(value))
 
     def Select(event):
+        #rajoute le chiffre affiche sur le compteur au contenu du message si l'utilisateur clique sur le joystick
+        #demande une confirmation puis enregistre completement le message si le click est maintenu
         global value
         if event.action != ACTION_PRESSED:
             if event.action == ACTION_RELEASED:
@@ -69,8 +140,12 @@ def ReadInput():
                 sense.show_letter(str(value))
             else:
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-                WriteAndEncode(message)
-                call("python3 GyroIn.py", Shell=True)
+                confirmer()
+                if confirmer():
+                    WriteAndEncode(message)
+                    call("python3 GyroIn.py", Shell=True)
+                else:
+                    call("sudo shutdown now", Shell=True)
          
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
@@ -79,158 +154,8 @@ def ReadInput():
     sense.stick.direction_middle = Select
     pause()
 
+#si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 if ReadMessage():
     call("python3 GyroOut.py", Shell=True)
 else:
     ReadInput()
-
-
-
-"""
-def hashing(string): #fonction hachant la clef
-    def to_32(value):
-        value = value % (2 ** 32)
-        if value >= 2**31:
-            value = value - 2 ** 32
-        value = int(value)
-        return value
-
-    if string:
-        x = ord(string[0]) << 7
-        m = 1000003
-        for c in string:
-            x = to_32((x*m) ^ ord(c))
-        x ^= len(string)
-        if x == -1:
-            x = -2
-        return str(x)
-    return ""
-
-def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffrement vigenere
-    enc = []
-    for i, e in enumerate(plain_text):
-        key_c = key[i % len(key)]
-        enc_c = chr((ord(e) + ord(key_c)) % 256)
-        enc.append(enc_c)
-    return ("".join(enc).encode()).decode()
-
-def CheckCode():
-    #permet de verifier si il existe deja un code meme apres avoir eteinds le rpi
-    #return True si un code est present
-    return False 
-
-def GyroCode():
-    liste_action = [] #liste de stockage des positions dans l espace
-    tourne = True
-    while tourne :
-        sense.show_letter(str(len(liste_action)))
-        event = sense.stick.wait_for_event()
-        if event.action == "pressed" and event.direction == "middle" : #pression sur le joystick pour ajouter une position
-            x = round(sense.get_accelerometer_raw()["x"])
-            y = round(sense.get_accelerometer_raw()["y"])
-            z = round(sense.get_accelerometer_raw()["z"])
-            if y == 0 and x == 0 and z == 1 :
-                action = "Nothing"
-                liste_action.append(action)
-            if y == 0 and x == -1 and z == 0 :
-                action = "turnleft"
-                liste_action.append(action)
-            if y == 0 and x == -1 and z == -1 :
-                action = "flipleft"
-                liste_action.append(action)
-            if y == 0 and x == 1 and z == 0 :
-                action = "turnright"
-                liste_action.append(action)
-            if y == 0 and x == 1 and z == -1 :
-                action = "flipright"
-                liste_action.append(action)
-            if y == 1 and x == 0 and z == 0 :
-                action = "turnbackward"
-                liste_action.append(action)
-            if y == -1 and x == 0 and z == 0 :
-                action = "turnforward"
-                liste_action.append(action)
-            if y == 0 and x == 0 and z == -1 :
-                action = "flipbackward"
-                liste_action.append(action) 
-        if event.action == "held" and event.direction == "middle" :
-            sense.show_message("Valider?",scroll_speed = 0.05)
-            conserver = True
-            validation = True
-            delete = False
-            while validation :
-                while conserver :
-                    sense.show_letter("V",(0, 255, 0))
-                    for event in sense.stick.get_events(): # Si on valide en appuyant au milieu, le message sera conserve, une autre action proposera le x
-                        if event.action == 'pressed' and event.direction == "middle":
-                            tourne = False
-                            conserver = False
-                            validation = False
-                            sense.clear()
-                            f= open("key.txt","w") #ouvre le document message.txt
-                            f.write(hashing("".join(liste_action))) #ecrit la clef hashee
-                            f.close()
-                        if event.action == "pressed" and event.direction != "middle" :
-                            conserver = False
-                            delete = True
-                while delete :
-                    sense.show_letter("X",(255, 0, 0))
-                    for event in sense.stick.get_events(): # Si on valide en appuyant au milieu, le message sera supprime, une autre action recommencera la bouche
-                        if event.action == 'pressed' and event.direction == "middle":
-                            delete = False
-                            validation = False
-                            sense.clear()
-                            liste_action = []
-                        if event.action == "pressed" and event.direction != "middle" :
-                            conserver = True
-                            delete = False
-
-def Up(event):
-        global value
-        if event.action != ACTION_RELEASED:
-            value += 1
-            if value < 0: value=9
-            if value > 9: value=0
-            sense.show_letter(str(value))
-
-def Down(event):
-    global value
-    if event.action != ACTION_RELEASED:
-        value -= 1
-        if value < 0: value=9
-        if value > 9: value=0
-        sense.show_letter(str(value))
-
-def Select(event):
-    global value
-    if event.action != ACTION_PRESSED:
-        if event.action == ACTION_RELEASED:
-            sense.show_letter(str(value), back_colour = green)
-            code.append(str(value))
-            sleep(0.2)
-            sense.show_letter(str(value))
-            GyroCode()
-        else:
-            f.write(encode(key,"".join(code)))
-            f.write(code)
-            f.close()
-            sense.clear()
-            code_in_rpi = True
-
-
-def CodeInRpi(code_in_rpi):
-    if code_in_rpi == False:
-        sense.show_message("No code, insert the new code", text_colour=white, back_colour=red, scroll_speed=0.05)
-        sense.show_letter(str(value))
-        sense.stick.direction_up = Up
-        sense.stick.direction_down = Down
-        sense.stick.direction_left = Down
-        sense.stick.direction_right = Up
-        sense.stick.direction_middle = Select
-        pause()
-
-    else:
-        sense.show_message("Code inside RPI, enter password", text_colour=white, back_colour=green, scroll_speed=0.05)
-        CheckGyroCode()
-"""
-
