@@ -92,12 +92,12 @@ def confirmer():
 
     def Select(event):
         global i
-            if event.action == ACTION_RELEASED:
-                if i == 0:
-                    sense.show_letter("V", back_colour = green)
-                    return True
-                else:
-                    sense.show_letter("F", back_colour = red)
+        if event.action == ACTION_RELEASED:
+            if i == 0:
+                sense.show_letter("V", back_colour = green)
+                return True
+            else:
+                sense.show_letter("F", back_colour = red)
                     return False
 
     sense.stick.direction_up = Up
