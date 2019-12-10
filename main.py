@@ -101,11 +101,10 @@ def ReadInput():
                 sleep(0.2)
                 sense.show_letter(str(value))
             else:
-                print("2,5")
-                sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-
-    while returning == True:
-        print("3")
+                return True
+                print("2.5")
+                #sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+    if Select() = True:
         return True
 
     sense.stick.direction_up = Up
@@ -114,6 +113,9 @@ def ReadInput():
     sense.stick.direction_right = Up
     sense.stick.direction_middle = Select
     pause()
+
+    if Select() = True:
+        return True
 
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 print("1")
