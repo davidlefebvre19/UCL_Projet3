@@ -103,9 +103,11 @@ def ReadInput():
             else:
                 return True
                 print("2.5")
-                #sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-    if Select(event) == True:
+    
+    if event.action == "held" and event.direction == "middle":
+        sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
         return True
+
 
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
