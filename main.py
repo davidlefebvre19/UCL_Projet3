@@ -101,7 +101,7 @@ def ReadInput():
                 sleep(0.2)
                 sense.show_letter(str(value))
             else:
-                returning = True
+                print("2,5")
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
 
     while returning == True:
