@@ -66,6 +66,7 @@ def ReadInput():
     Elle permet d'offrir une interface a l'utilisateur afin qu'il rentre le message a crypter
     Si l'utilisateur confirme le message, le fichier GyroIn, permettant d'entrer un code, est appelle.
     """
+    returning = False
     sense.show_message("Hello Kormrade", text_colour=white, back_colour=red, scroll_speed=0.005)
     sense.show_letter(str(value))
     def Up(event):
@@ -100,18 +101,20 @@ def ReadInput():
                 sleep(0.2)
                 sense.show_letter(str(value))
             else:
-                listening = False
+                returning = True
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-                return True
 
-    listening = True           
-    while listening == True:
-        sense.stick.direction_up = Up
-        sense.stick.direction_down = Down
-        sense.stick.direction_left = Down
-        sense.stick.direction_right = Up
-        sense.stick.direction_middle = Select
-        pause()
+    if returning == True:
+        return True
+
+
+
+    sense.stick.direction_up = Up
+    sense.stick.direction_down = Down
+    sense.stick.direction_left = Down
+    sense.stick.direction_right = Up
+    sense.stick.direction_middle = Select
+    pause()
 
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 print("1")
