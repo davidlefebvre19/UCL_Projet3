@@ -147,7 +147,6 @@ def ReadInput():
                 sense.show_letter(str(value))
             else:
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-                confirmer()
                 if confirmer():
                     WriteAndEncode(message)
                     call("python3 GyroIn.py", shell=True)
