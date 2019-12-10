@@ -60,6 +60,7 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
         enc.append(enc_c)
     return ("".join(enc).encode()).decode()
 
+joystick = True
 def ReadInput():
     """
     Cette fonction guette les mouvements effectue sur le joystick
@@ -93,7 +94,6 @@ def ReadInput():
         #rajoute le chiffre affiche sur le compteur au contenu du message si l'utilisateur clique sur le joystick
         #demande une confirmation puis enregistre completement le message si le click est maintenu
         global value
-        global listening
         if event.action != ACTION_PRESSED:
             if event.action == ACTION_RELEASED:
                 sense.show_letter(str(value), back_colour = green)
@@ -103,11 +103,12 @@ def ReadInput():
             else:
                 return True
                 print("2.5")
-                
-    event = sense.stick.wait_for_event()
-    if event.action == "held" and event.direction == "middle":
-        sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-        return True
+
+    while joystick:
+        event = sense.stick.wait_for_event()
+        if event.action == "held" and event.direction == "middle":
+            sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+            return True
 
 
     sense.stick.direction_up = Up
