@@ -63,7 +63,7 @@ def confirmer():
     #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
     #:return (boolean) True si l'utilisateur choisit "V" et inversement
     i = 1
-    sense.show_letter(confirm[i])
+    sense.show_letter(i)
 
     def Up(event):
         if event.action != ACTION_RELEASED:
@@ -107,6 +107,7 @@ def ReadInput():
     Si l'utilisateur confirme le message, le fichier GyroIn, permettant d'entrer un code, est appelle.
     """
     sense.show_message("Hello Kormrade", text_colour=white, back_colour=red)
+    sense.show_letter(str(value))
     def Up(event):
         #si l'utilisateur pousse le joystick vers le haut ou vers la droite, on incrmante 1 au compteur
         #la valeur du compteur est toujours comprise dans l'intervalle ferme [0,9].
