@@ -98,7 +98,7 @@ def confirmer():
                 return True
             else:
                 sense.show_letter("F", back_colour = red)
-                    return False
+                return False
 
     sense.stick.direction_up = Up
     sense.stick.direction_down = Down
