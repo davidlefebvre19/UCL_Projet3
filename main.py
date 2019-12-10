@@ -92,6 +92,7 @@ def ReadInput():
         #rajoute le chiffre affiche sur le compteur au contenu du message si l'utilisateur clique sur le joystick
         #demande une confirmation puis enregistre completement le message si le click est maintenu
         global value
+        global listening
         if event.action != ACTION_PRESSED:
             if event.action == ACTION_RELEASED:
                 sense.show_letter(str(value), back_colour = green)
@@ -99,19 +100,18 @@ def ReadInput():
                 sleep(0.2)
                 sense.show_letter(str(value))
             else:
+                listening = False
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-                confirmed = True
-                if confirmed:
-                    return True
-                else:
-                    return False
+                return True
 
-    sense.stick.direction_up = Up
-    sense.stick.direction_down = Down
-    sense.stick.direction_left = Down
-    sense.stick.direction_right = Up
-    sense.stick.direction_middle = Select
-    pause()
+    listening = True           
+    while listening:
+        sense.stick.direction_up = Up
+        sense.stick.direction_down = Down
+        sense.stick.direction_left = Down
+        sense.stick.direction_right = Up
+        sense.stick.direction_middle = Select
+        pause()
 
 #si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
 print("1")
@@ -119,7 +119,6 @@ if not ReadMessage():
     print("2")
     if ReadInput():
         print("3")
-        call("python3 GyroIn", shell=True)
     else:
         print("4")
         call("sudo shutdown now", shell=True)
