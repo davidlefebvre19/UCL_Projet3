@@ -10,6 +10,7 @@ white = (255,255,255)
 red = (255,0,0)
 green = (0,255,0)
 
+sense.clear()
 def confirmer():
     #demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
     #:return (boolean) True si l'utilisateur choisit "V" et inversement
@@ -38,6 +39,7 @@ def confirmer():
         if event.action == ACTION_RELEASED:
             if i == 0:
                 sense.show_letter("V", back_colour = green)
+                print("yes")
                 return True
             else:
                 sense.show_letter("F", back_colour = red)
@@ -50,3 +52,7 @@ def confirmer():
     sense.stick.direction_right = Up
     sense.stick.direction_middle = Select
     pause()
+
+confirmed = confirmer()
+if confirmed:
+    print("yes")
