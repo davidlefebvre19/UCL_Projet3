@@ -3,6 +3,7 @@ sense = SenseHat()
 sense.low_light = True
 from time import sleep
 from signal import pause
+from subprocess import call
 
 #9Q4hr6iM
 
@@ -15,12 +16,19 @@ message = []
 value = 0
 
 sense.clear()
-sense.show_message("test")
-sense.show_letter(str(value))
+
+def ReadMessage():
+    f = open("message.txt")
+    message = f.read()
+    f.close()
+    if message = "":
+        return False
+    else:
+        return True
 
 def WriteAndEncode(message):
     str(message)
-    f = open("message", "w+")
+    f = open("message", "w")
     f.write(encode(key,"".join(message)))
     f.close()
 
@@ -33,40 +41,48 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
         enc.append(enc_c)
     return ("".join(enc).encode()).decode()
 
-def Up(event):
+def ReadInput():
+    sense.show_message("Hello Kormrade", text_colour=white, back_colour=red)
+    def Up(event):
+            global value
+            if event.action != ACTION_RELEASED:
+                value += 1
+                if value < 0: value=9
+                if value > 9: value=0
+                sense.show_letter(str(value))
+
+    def Down(event):
         global value
         if event.action != ACTION_RELEASED:
-            value += 1
+            value -= 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
 
-def Down(event):
-    global value
-    if event.action != ACTION_RELEASED:
-        value -= 1
-        if value < 0: value=9
-        if value > 9: value=0
-        sense.show_letter(str(value))
+    def Select(event):
+        global value
+        if event.action != ACTION_PRESSED:
+            if event.action == ACTION_RELEASED:
+                sense.show_letter(str(value), back_colour = green)
+                message.append(str(value))
+                sleep(0.2)
+                sense.show_letter(str(value))
+            else:
+                sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+                WriteAndEncode(message)
+                call("python3 GyroIn.py", Shell=True)
+         
+    sense.stick.direction_up = Up
+    sense.stick.direction_down = Down
+    sense.stick.direction_left = Down
+    sense.stick.direction_right = Up
+    sense.stick.direction_middle = Select
+    pause()
 
-def Select(event):
-    global value
-    if event.action != ACTION_PRESSED:
-        if event.action == ACTION_RELEASED:
-            sense.show_letter(str(value), back_colour = green)
-            message.append(str(value))
-            sleep(0.2)
-            sense.show_letter(str(value))
-        else:
-            sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-            WriteAndEncode(message)
-            
-sense.stick.direction_up = Up
-sense.stick.direction_down = Down
-sense.stick.direction_left = Down
-sense.stick.direction_right = Up
-sense.stick.direction_middle = Select
-pause()
+if ReadMessage():
+    call("python3 GyroOut.py", Shell=True)
+else:
+    ReadInput()
 
 
 
