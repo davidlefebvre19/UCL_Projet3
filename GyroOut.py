@@ -8,6 +8,10 @@ from subprocess import call
 liste_action = []
 action = 0
 ListeningToJoystick = True
+white = (255,255,255)
+red = (255,0,0)
+green = (0,255,0)
+orange = (120,255,120)
 
 def hashing(string):
     def to_32(value):
@@ -54,7 +58,7 @@ def confirmer():
 	sense.stick.direction_up = Up
 	sense.stick.direction_down = Down
 	pause()
-	
+
 def ReadInput():
 	while ListeningToJoystick == True:
 	sense.show_letter(str(action))
@@ -88,9 +92,53 @@ def ReadInput():
             action = "flipbackward"
             liste_action.append(action)
     if event.action == "held" and event.direction == "middle"
-    	sense.show_message("Are you sure ?", scroll_speed = 0.05)
-    	confirmed = confirmer()
-    	if confirmed == False:
-    		call("sudo shutdown now", shell=True)
-    	else:
-    		WriteAndEncode(liste_action)    
+    	sense.show_message("Checking code", text_colour=orange, scroll_speed = 0.05)
+    	return True
+
+def hashing(string):
+    def to_32(value):
+        value = value % (2 ** 32)
+        if value >= 2**31:
+            value = value - 2 ** 32
+        value = int(value)
+        return value
+
+    if string:
+        x = ord(string[0]) << 7
+        m = 1000003
+        for c in string:
+            x = to_32((x*m) ^ ord(c))
+        x ^= len(string)
+        if x == -1:
+            x = -2
+        return str(x)
+    return ""
+
+def CheckCode(liste_action):
+	uncheckedcode = hashing(liste_action)
+	f = open("message.txt", "r")
+	checkedcode = f.read()
+	if uncheckedcode == checkedcode:
+		return True
+	else:
+		return False
+
+ReadInput()
+if ReadInput():
+	if CheckCode():
+		call("python3 decrypt.py", shell=True)
+	else:
+		for i in range (2):
+			liste_action = []
+			i += 1
+			ReadInput()
+			if CheckCode(): call("python3 decrypt.py", shell=True)
+		sense.show_message("Autodestruction du code", text_colour=red)
+		call("sudo rm message.txt && rm code.txt", shell=True)
+		sense.show_message("Message detruit")
+		call("sudo shutdown now", shell=True)
+
+			
+
+
+
