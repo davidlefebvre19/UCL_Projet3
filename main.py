@@ -197,28 +197,28 @@ def GyroIn():
             y = round(sense.get_accelerometer_raw()["y"])
             z = round(sense.get_accelerometer_raw()["z"])
             if y == 0 and x == 0 and z == 1 :
-                action = "Nothing"
+                action = "1"
                 liste_action.append(action)
             if y == 0 and x == -1 and z == 0 :
-                action = "turnleft"
+                action = "2"
                 liste_action.append(action)
             if y == 0 and x == -1 and z == -1 :
-                action = "flipleft"
+                action = "3"
                 liste_action.append(action)
             if y == 0 and x == 1 and z == 0 :
-                action = "turnright"
+                action = "4"
                 liste_action.append(action)
             if y == 0 and x == 1 and z == -1 :
-                action = "flipright"
+                action = "5"
                 liste_action.append(action)
             if y == 1 and x == 0 and z == 0 :
-                action = "turnbackward"
+                action = "6"
                 liste_action.append(action)
             if y == -1 and x == 0 and z == 0 :
-                action = "turnforward"
+                action = "7"
                 liste_action.append(action)
             if y == 0 and x == 0 and z == -1 :
-                action = "flipbackward"
+                action = "8"
                 liste_action.append(action)
             mouvement += 1
             sense.show_letter(str(mouvement))
@@ -252,28 +252,28 @@ def GyroOut():
             y = round(sense.get_accelerometer_raw()["y"])
             z = round(sense.get_accelerometer_raw()["z"])
             if y == 0 and x == 0 and z == 1 :
-                action = "Nothing"
-                liste_action_entree.append(action)
+                action = "1"
+                liste_action.append(action)
             if y == 0 and x == -1 and z == 0 :
-                action = "turnleft"
-                liste_action_entree.append(action)
+                action = "2"
+                liste_action.append(action)
             if y == 0 and x == -1 and z == -1 :
-                action = "flipleft"
-                liste_action_entree.append(action)
+                action = "3"
+                liste_action.append(action)
             if y == 0 and x == 1 and z == 0 :
-                action = "turnright"
-                liste_action_entree.append(action)
+                action = "4"
+                liste_action.append(action)
             if y == 0 and x == 1 and z == -1 :
-                action = "flipright"
-                liste_action_entree.append(action)
+                action = "5"
+                liste_action.append(action)
             if y == 1 and x == 0 and z == 0 :
-                action = "turnbackward"
-                liste_action_entree.append(action)
+                action = "6"
+                liste_action.append(action)
             if y == -1 and x == 0 and z == 0 :
-                action = "turnforward"
-                liste_action_entree.append(action)
+                action = "7"
+                liste_action.append(action)
             if y == 0 and x == 0 and z == -1 :
-                action = "flipbackward"
+                action = "8"
                 liste_action_entree.append(action)
             mouvement += 1
             sense.show_letter(str(mouvement))
