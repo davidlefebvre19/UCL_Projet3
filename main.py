@@ -216,6 +216,7 @@ def GyroIn():
         if event.action == "held" and event.direction == "middle":
             sense.show_message("Are you sure ?", scroll_speed = 0.05)
             if confirmer():
+                print(liste_action)
                 WriteAndEncodeHashing(liste_action)
                 #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
                 return True
