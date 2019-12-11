@@ -31,7 +31,7 @@ def ReadMessage():
         return True
     except:
         return False
-        
+
 def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffrement vigenere
     """
     Chiffre un texte en utilisant une clé de chiffrement.
@@ -88,7 +88,7 @@ def WriteAndEncodeHashing(code):
     """
     str(code)
     f = open("code.txt", "w")
-    f.write(hashing(key,"".join(code)))
+    f.write(hashing("".join(code)))
     f.close()
 
 def confirmer():
