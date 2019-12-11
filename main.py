@@ -225,7 +225,7 @@ def GyroIn():
 
 def CheckCode(liste_action):
     uncheckedcode = hashing(liste_action)
-    f = open("message.txt", "r")
+    f = open("code.txt", "r")
     checkedcode = f.read()
     print(checkedcode, uncheckedcode)
     if uncheckedcode == checkedcode:
