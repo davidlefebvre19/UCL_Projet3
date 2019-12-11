@@ -108,37 +108,36 @@ def confirmer():
     sense.show_letter(l[i])
     while joystick:
         event = sense.stick.wait_for_event()
-        if event.action == "pressed" and event.direction == "middle":
-            if i == 0:
-                sense.show_letter("Y", back_colour = green)
-                print("confirmed")
-                return True
-            else:
-                sense.show_letter("N", back_colour = red)
-                print("non confirmed")
-                return False
-        if event.action == "pressed" and event.direction == "left":
-            i -= 1
-            if i>1: i=0
-            if i<1: i=1
-            sense.show_letter(l[i])
-        if event.action == "pressed" and event.direction == "right":
-            i += 1
-            if i>1: i=0
-            if i<1: i=1
-            sense.show_letter(l[i])
-        if event.action == "pressed" and event.direction == "up":
-            i += 1
-            if i>1: i=0
-            if i<1: i=1
-            sense.show_letter(l[i])
-        if event.action == "pressed" and event.direction == "down":
-            i -= 1
-            if i>1: i=0
-            if i<1: i=1
-            sense.show_letter(l[i])
-
-
+        for event in sense.stick.get_events():
+            if event.action == "pressed" and event.direction == "middle":
+                if i == 0:
+                    sense.show_letter("Y", back_colour = green)
+                    print("confirmed")
+                    return True
+                else:
+                    sense.show_letter("N", back_colour = red)
+                    print("non confirmed")
+                    return False
+            if event.action == "pressed" and event.direction == "left":
+                i -= 1
+                if i>1: i=0
+                if i<1: i=1
+                sense.show_letter(l[i])
+            if event.action == "pressed" and event.direction == "right":
+                i += 1
+                if i>1: i=0
+                if i<1: i=1
+                sense.show_letter(l[i])
+            if event.action == "pressed" and event.direction == "up":
+                i += 1
+                if i>1: i=0
+                if i<1: i=1
+                sense.show_letter(l[i])
+            if event.action == "pressed" and event.direction == "down":
+                i -= 1
+                if i>1: i=0
+                if i<1: i=1
+                sense.show_letter(l[i])
 
 
 def ReadInput():
