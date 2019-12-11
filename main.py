@@ -233,7 +233,7 @@ def CheckCode(liste_action):
     uncheckedcode = hashing(liste_action)
     f = open("code.txt", "r")
     checkedcode = f.read()
-    print(checkedcode, uncheckedcode)
+    print("good code: ",checkedcode," unchecked code: ",uncuncheckedcode)
     if uncheckedcode == checkedcode:
         return True
     else:
