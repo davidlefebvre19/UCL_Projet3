@@ -107,7 +107,6 @@ def confirmer():
     sense.show_message("Sure?", back_colour=green, scroll_speed=0.03)
     sense.show_letter(l[i])
     event = sense.stick.wait_for_event()
-    for event in sense.stick.get_events():
         while joystick:
             if event.action == "pressed" and event.direction == "middle":
                 if i == 0:
