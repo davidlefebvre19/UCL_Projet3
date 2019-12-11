@@ -30,6 +30,7 @@ def ReadMessage():
         f.close()
         return True
     except:
+        print("no message")
         return False
 
 def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffrement vigenere
