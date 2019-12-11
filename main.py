@@ -193,7 +193,7 @@ def GyroIn():
                 action = "flipbackward"
                 liste_action.append(action)
             mouvement += 1
-            sense.show_letter(mouvement)
+            sense.show_letter(str(mouvement))
         if event.action == "held" and event.direction == "middle":
             sense.show_message("Are you sure ?", scroll_speed = 0.05)
             if confirmer():
