@@ -279,6 +279,7 @@ def GyroOut():
             if confirmer():
                 print(liste_action_entree, "out")
                 if CheckCode(liste_action_entree):
+                    print("code ok")
                     return True
                 else:
                     return False
