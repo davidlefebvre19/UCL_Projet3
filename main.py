@@ -159,9 +159,10 @@ def ReadInput():
             sense.show_letter(str(value))
 
 def GyroIn():
-    action = 0
+    liste_action = []
+    mouvement = 0
     while joystick:
-        sense.show_letter(str(action))
+        sense.show_letter(str(mouvement))
         event = sense.stick.wait_for_event()
         if event.action == "pressed" and event.direction == "middle":
             x = round(sense.get_accelerometer_raw()["x"])
@@ -191,9 +192,10 @@ def GyroIn():
             if y == 0 and x == 0 and z == -1 :
                 action = "flipbackward"
                 liste_action.append(action)
+            mouvement += 1
+            sense.show_letter(mouvement)
         if event.action == "held" and event.direction == "middle":
             sense.show_message("Are you sure ?", scroll_speed = 0.05)
-            confirmer()
             if confirmer():
                 WriteAndEncodeHashing(liste_action)
                 #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
