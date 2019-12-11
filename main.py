@@ -163,7 +163,7 @@ def GyroIn():
     while joystick:
         sense.show_letter(str(action))
         event = sense.stick.wait_for_event()
-        if event.action == "pressed" and even.direction == "middle":
+        if event.action == "pressed" and event.direction == "middle":
             x = round(sense.get_accelerometer_raw()["x"])
             y = round(sense.get_accelerometer_raw()["y"])
             z = round(sense.get_accelerometer_raw()["z"])
