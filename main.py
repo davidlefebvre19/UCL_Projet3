@@ -31,30 +31,7 @@ def ReadMessage():
         return True
     except:
         return False
-
-def WriteAndEncodeMessage(message):
-    """
-    crypte le message dans un fichier appele message.txt
-    prends en parametre une string a crypter
-    :param (str) string contenant le message
-    """
-    str(message)
-    f = open("message", "w")
-    f.write(encode(key,"".join(message)))
-    f.close()
-
-def WriteAndEncodeHashing(code):
-    """
-    Hash le message dans un fichier appele message.txt
-    prends en parametre une string a crypter
-    :param (str) string contenant le message
-    """
-    str(code)
-    f = open("code.txt", "w")
-    f.write(hashing(key,"".join(code)))
-    f.close()
-
-
+        
 def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffrement vigenere
     """
     Chiffre un texte en utilisant une clé de chiffrement.
@@ -72,6 +49,47 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
         enc_c = chr((ord(e) + ord(key_c)) % 256)
         enc.append(enc_c)
     return ("".join(enc).encode()).decode()
+
+def hashing(string):
+    def to_32(value):
+        value = value % (2 ** 32)
+        if value >= 2**31:
+            value = value - 2 ** 32
+        value = int(value)
+        return value
+
+    if string:
+        x = ord(string[0]) << 7
+        m = 1000003
+        for c in string:
+            x = to_32((x*m) ^ ord(c))
+        x ^= len(string)
+        if x == -1:
+            x = -2
+        return str(x)
+    return ""
+
+def WriteAndEncodeMessage(message):
+    """
+    crypte le message dans un fichier appele message.txt
+    prends en parametre une string a crypter
+    :param (str) string contenant le message
+    """
+    str(message)
+    f = open("message.txt", "w")
+    f.write(encode(key,"".join(message)))
+    f.close()
+
+def WriteAndEncodeHashing(code):
+    """
+    Hash le message dans un fichier appele message.txt
+    prends en parametre une string a crypter
+    :param (str) string contenant le message
+    """
+    str(code)
+    f = open("code.txt", "w")
+    f.write(hashing(key,"".join(code)))
+    f.close()
 
 def confirmer():
     l = ["V","F"]
