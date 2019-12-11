@@ -108,7 +108,7 @@ def confirmer():
     sense.show_letter(l[i])
     while joystick:
         event = sense.stick.wait_for_event()
-        if event.action == "pressed" and event.direction == "middle":
+        if event.action == "pressed" and event.direction == "middle" and event.action != ACTION_RELEASED:
             if i == 0:
                 sense.show_letter("Y", back_colour = green)
                 print("confirmed")
@@ -117,22 +117,22 @@ def confirmer():
                 sense.show_letter("N", back_colour = red)
                 print("non confirmed")
                 return False
-        if event.action == "pressed" and event.direction == "left":
+        if event.action == "pressed" and event.direction == "left" and event.action != ACTION_RELEASED:
             i -= 1
             if i%2 == 0: i=0
             if i%2 != 0: i=1
             sense.show_letter(l[i])
-        if event.action == "pressed" and event.direction == "right":
+        if event.action == "pressed" and event.direction == "right" and event.action != ACTION_RELEASED:
             i += 1
             if i%2 == 0: i=0
             if i%2 != 0: i=1
             sense.show_letter(l[i])
-        if event.action == "pressed" and event.direction == "up":
+        if event.action == "pressed" and event.direction == "up" and event.action != ACTION_RELEASED:
             i += 1
             if i%2 == 0: i=0
             if i%2 != 0: i=1
             sense.show_letter(l[i])
-        if event.action == "pressed" and event.direction == "down":
+        if event.action == "pressed" and event.direction == "down" and event.action != ACTION_RELEASED:
             i -= 1
             if i%2 == 0: i=0
             if i%2 != 0: i=1
@@ -151,34 +151,34 @@ def ReadInput():
 
     while joystick:
         event = sense.stick.wait_for_event()
-        if event.action == "held" and event.direction == "middle":
+        if event.action == "held" and event.direction == "middle" and event.action != ACTION_RELEASED:
             sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
             if confirmer():
                 print("GyroIn")
                 return True
             else:
                 call("sudo shutdown now", shell=True)
-        if event.action == "pressed" and event.direction == "middle":
+        if event.action == "pressed" and event.direction == "middle" and event.action != ACTION_RELEASED:
             sense.show_letter(str(value), back_colour = green)
             message.append(str(value))
             sleep(0.2)
             sense.show_letter(str(value))
-        if event.action == "pressed" and event.direction == "left":
+        if event.action == "pressed" and event.direction == "left" and event.action != ACTION_RELEASED:
             value -= 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
-        if event.action == "pressed" and event.direction == "right" :
+        if event.action == "pressed" and event.direction == "right" and event.action != ACTION_RELEASED:
             value += 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
-        if event.action == "pressed" and event.direction == "up" :
+        if event.action == "pressed" and event.direction == "up" and event.action != ACTION_RELEASED:
             value += 1
             if value < 0: value=9
             if value > 9: value=0
             sense.show_letter(str(value))
-        if event.action == "pressed" and event.direction == "down" :
+        if event.action == "pressed" and event.direction == "down" and event.action != ACTION_RELEASED:
             value -= 1
             if value < 0: value=9
             if value > 9: value=0
@@ -190,7 +190,7 @@ def GyroIn():
     while joystick:
         sense.show_letter(str(mouvement))
         event = sense.stick.wait_for_event()
-        if event.action == "pressed" and event.direction == "middle":
+        if event.action == "pressed" and event.direction == "middle" and event.action != ACTION_RELEASED:
             x = round(sense.get_accelerometer_raw()["x"])
             y = round(sense.get_accelerometer_raw()["y"])
             z = round(sense.get_accelerometer_raw()["z"])
@@ -245,7 +245,7 @@ def GyroOut():
     while joystick:
         sense.show_letter(str(mouvement))
         event = sense.stick.wait_for_event()
-        if event.action == "pressed" and event.direction == "middle":
+        if event.action == "pressed" and event.direction == "middle" and event.action != ACTION_RELEASED:
             x = round(sense.get_accelerometer_raw()["x"])
             y = round(sense.get_accelerometer_raw()["y"])
             z = round(sense.get_accelerometer_raw()["z"])
@@ -275,7 +275,7 @@ def GyroOut():
                 liste_action_entree.append(action)
             mouvement += 1
             sense.show_letter(str(mouvement))
-        if event.action == "held" and event.direction == "middle":
+        if event.action == "held" and event.direction == "middle" and event.action != ACTION_RELEASED:
             if confirmer():
                 print(liste_action_entree, "out")
                 if CheckCode(liste_action_entree):
