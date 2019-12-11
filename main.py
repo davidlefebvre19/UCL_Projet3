@@ -215,9 +215,8 @@ def GyroIn():
             mouvement += 1
             sense.show_letter(str(mouvement))
         if event.action == "held" and event.direction == "middle":
-            sense.show_message("Are you sure ?", scroll_speed = 0.05)
             if confirmer():
-                print(liste_action)
+                print(liste_action, "in")
                 WriteAndEncodeHashing(liste_action)
                 #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
                 return True
@@ -228,6 +227,7 @@ def CheckCode(liste_action):
     uncheckedcode = hashing(liste_action)
     f = open("message.txt", "r")
     checkedcode = f.read()
+    print(checkedcode, uncheckedcode)
     if uncheckedcode == checkedcode:
         return True
     else:
@@ -270,9 +270,8 @@ def GyroOut():
             mouvement += 1
             sense.show_letter(str(mouvement))
         if event.action == "held" and event.direction == "middle":
-            sense.show_message("Are you sure ?", scroll_speed = 0.05)
             if confirmer():
-                print(liste_action_entree)
+                print(liste_action_entree, "out")
                 if CheckCode(liste_action_entree):
                     return True
                 else:
