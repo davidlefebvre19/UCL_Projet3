@@ -291,12 +291,15 @@ def DetruireLesPreuvesALerteRouge():
     call("sudo shutdown now", shell=True)
 
 
+
+
 erreurs = 0
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         GyroIn()
 else:
+    print("2")
     while erreurs < 2:
         GyroOut()
         if GyroOut() == True:
