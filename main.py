@@ -232,7 +232,7 @@ def CheckCode(liste_action):
         return False
 
 def GyroOut():
-    liste_action = []
+    liste_action_entree = []
     mouvement = 0
     while joystick:
         sense.show_letter(str(mouvement))
@@ -243,35 +243,35 @@ def GyroOut():
             z = round(sense.get_accelerometer_raw()["z"])
             if y == 0 and x == 0 and z == 1 :
                 action = "Nothing"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == -1 and z == 0 :
                 action = "turnleft"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == -1 and z == -1 :
                 action = "flipleft"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == 1 and z == 0 :
                 action = "turnright"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == 1 and z == -1 :
                 action = "flipright"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 1 and x == 0 and z == 0 :
                 action = "turnbackward"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == -1 and x == 0 and z == 0 :
                 action = "turnforward"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == 0 and z == -1 :
                 action = "flipbackward"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             mouvement += 1
             sense.show_letter(str(mouvement))
         if event.action == "held" and event.direction == "middle":
             sense.show_message("Are you sure ?", scroll_speed = 0.05)
             if confirmer():
-                print(liste_action)
-                if CheckCode(liste_action):
+                print(liste_action_entree)
+                if CheckCode(liste_action_entree):
                     return True
                 else:
                     return False
