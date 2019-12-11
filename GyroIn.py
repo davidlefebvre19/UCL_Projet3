@@ -13,10 +13,10 @@ sense.show_message("Enter code", text_colour = white, back_colour= green)
 
 liste_action = []
 action = 0
-ListeningToJoystick = True
+joystick = True
 
 
-def WriteAndEncode(code):
+def WriteAndEncodeHashing(code):
     """
     Hash le message dans un fichier appele message.txt
     prends en parametre une string a crypter
@@ -46,88 +46,47 @@ def hashing(string):
         return str(x)
     return ""
 
-def confirmer():
-	#demande a l'utilisateur de confirmer son choix en choisissant "V" avec le joystick, "F", si il ne souhaite pas confirmer.
-	#:return (boolean) True si l'utilisateur choisit "V" et inversement
-	i = 1
-	sense.show_letter(confirm[i])
-
-	def Up(event):
-		if event.action != ACTION_RELEASED:
-			i += 1
-			if i>1: i=0
-			if i<1: i=1
-			if i == 1:
-				sense.show_letter("F", text_colour=red)
-			else:
-				sense.show_letter("V", text_colour=green)
-
-	def Down(event):
-		if event.action != ACTION_RELEASED:
-			i += 1
-			if i>1: i=0
-			if i<1: i=1
-			if i == 1:
-				sense.show_letter("F", text_colour=red)
-			else:
-				sense.show_letter("V", text_colour=green)
-
-	def Select(event):
-	        if event.action == ACTION_RELEASED:
-	        	if i == 0
-	            	sense.show_letter("V", back_colour = green)
-	            	return True
-	           	else:
-	           		sense.show_letter("F", back_colour = red)
-	           		return False
-	sense.stick.direction_up = Up
-	sense.stick.direction_down = Down
-	sense.stick.direction_left = Down
-	sense.stick.direction_right = Up
-	sense.stick.direction_middle = Select
-	pause()
-
-
-while ListeningToJoystick:
-	sense.show_letter(str(action))
-	event = sense.stick.wait_for_event()
-	if event.action == "pressed" and even.direction == "middle":
-		x = round(sense.get_accelerometer_raw()["x"])
-		y = round(sense.get_accelerometer_raw()["y"])
-		z = round(sense.get_accelerometer_raw()["z"])
-        if y == 0 and x == 0 and z == 1 :
-            action = "Nothing"
-            liste_action.append(action)
-        if y == 0 and x == -1 and z == 0 :
-            action = "turnleft"
-            liste_action.append(action)
-        if y == 0 and x == -1 and z == -1 :
-            action = "flipleft"
-            liste_action.append(action)
-        if y == 0 and x == 1 and z == 0 :
-            action = "turnright"
-            liste_action.append(action)
-        if y == 0 and x == 1 and z == -1 :
-            action = "flipright"
-            liste_action.append(action)
-        if y == 1 and x == 0 and z == 0 :
-            action = "turnbackward"
-            liste_action.append(action)
-        if y == -1 and x == 0 and z == 0 :
-            action = "turnforward"
-            liste_action.append(action)
-        if y == 0 and x == 0 and z == -1 :
-            action = "flipbackward"
-            liste_action.append(action)
-    if event.action == "held" and event.direction == "middle"
-    	sense.show_message("Are you sure ?", scroll_speed = 0.05)
-    	confirmer()
-    	if confirmer():
-    		WriteAndEncode(liste_action)
-    		#le RPI est eteinds qu'elle que soit la decision de l'utilisateur
-    		call("sudo shutdown now", shell=True)
-    	else:
-    		call("sudo shutdown now", shell=True)
+def GyroIn():
+	while joystick:
+		sense.show_letter(str(action))
+		event = sense.stick.wait_for_event()
+		if event.action == "pressed" and even.direction == "middle":
+			x = round(sense.get_accelerometer_raw()["x"])
+			y = round(sense.get_accelerometer_raw()["y"])
+			z = round(sense.get_accelerometer_raw()["z"])
+	        if y == 0 and x == 0 and z == 1 :
+	            action = "Nothing"
+	            liste_action.append(action)
+	        if y == 0 and x == -1 and z == 0 :
+	            action = "turnleft"
+	            liste_action.append(action)
+	        if y == 0 and x == -1 and z == -1 :
+	            action = "flipleft"
+	            liste_action.append(action)
+	        if y == 0 and x == 1 and z == 0 :
+	            action = "turnright"
+	            liste_action.append(action)
+	        if y == 0 and x == 1 and z == -1 :
+	            action = "flipright"
+	            liste_action.append(action)
+	        if y == 1 and x == 0 and z == 0 :
+	            action = "turnbackward"
+	            liste_action.append(action)
+	        if y == -1 and x == 0 and z == 0 :
+	            action = "turnforward"
+	            liste_action.append(action)
+	        if y == 0 and x == 0 and z == -1 :
+	            action = "flipbackward"
+	            liste_action.append(action)
+	    if event.action == "held" and event.direction == "middle":
+	    	sense.show_message("Are you sure ?", scroll_speed = 0.05)
+	    	confirmer()
+	    	if confirmer():
+	    		WriteAndEncode(liste_action)
+	    		#le RPI est eteinds qu'elle que soit la decision de l'utilisateur
+	    		call("sudo shutdown now", shell=True)
+	    	else:
+	    		call("sudo shutdown now", shell=True)
 
 
 

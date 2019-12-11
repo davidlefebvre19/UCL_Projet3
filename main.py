@@ -10,9 +10,13 @@ code_in_rpi = False
 white = (255,255,255)
 red = (255,0,0)
 green = (0,255,0)
+orange = (128,255,0)
 key = "louvain"
 message = []
 i = 0
+joystick = True
+liste_action = []
+action = 0
 
 sense.clear()
 
@@ -29,7 +33,7 @@ def ReadMessage():
     except:
         return False
 
-def WriteAndEncode(message):
+def WriteAndEncodeMessage(message):
     """
     crypte le message dans un fichier appele message.txt
     prends en parametre une string a crypter
@@ -38,6 +42,17 @@ def WriteAndEncode(message):
     str(message)
     f = open("message", "w")
     f.write(encode(key,"".join(message)))
+    f.close()
+
+def WriteAndEncodeHashing(code):
+    """
+    Hash le message dans un fichier appele message.txt
+    prends en parametre une string a crypter
+    :param (str) string contenant le message
+    """
+    str(code)
+    f = open("code.txt", "w")
+    f.write(hashing(key,"".join(code)))
     f.close()
 
 
@@ -59,7 +74,46 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
         enc.append(enc_c)
     return ("".join(enc).encode()).decode()
 
-joystick = True
+def confirmer():
+    l = ["V","F"]
+    i = 0
+    sense.show_message("Confirm :", text_colour=orange)
+    sense.show_letter(l[i])
+    while joystick:
+        event = sense.stick.wait_for_event()
+        if event.action == "pressed" and event.direction == "middle":
+            if i == 0:
+                sense.show_letter("Y", back_colour = green)
+                print("yes")
+                return True
+            else:
+                sense.show_letter("N", back_colour = red)
+                print("non")
+                return False
+        if event.action == "pressed" and event.direction == "left":
+            i -= 1
+            if i>1: i=0
+            if i<1: i=1
+            sense.show_letter(l[i])
+        if event.action == "pressed" and event.direction == "right":
+            i += 1
+            if i>1: i=0
+            if i<1: i=1
+            sense.show_letter(l[i])
+        if event.action == "pressed" and event.direction == "up":
+            i += 1
+            if i>1: i=0
+            if i<1: i=1
+            sense.show_letter(l[i])
+        if event.action == "pressed" and event.direction == "down":
+            i -= 1
+            if i>1: i=0
+            if i<1: i=1
+            sense.show_letter(l[i])
+
+
+
+
 def ReadInput():
     """
     Cette fonction guette les mouvements effectue sur le joystick
@@ -69,55 +123,16 @@ def ReadInput():
     value = 0
     sense.show_message("Hello Kormrade", text_colour=white, back_colour=red, scroll_speed=0.005)
     sense.show_letter(str(value))
-    """
-    def Up(event):
-        #si l'utilisateur pousse le joystick vers le haut ou vers la droite, on incrmante 1 au compteur
-        #la valeur du compteur est toujours comprise dans l'intervalle ferme [0,9].
-        global value
-        if event.action != ACTION_RELEASED:
-            value += 1
-            if value < 0: value=9
-            if value > 9: value=0
-            sense.show_letter(str(value))
-
-    def Down(event):
-        #si l'utilisateur pousse le joystick vers le haut ou vers la droite, on diminue de 1 le compteur
-        #la valeur du compteur est toujours comprise dans l'intervalle ferme [0,9].
-        global value
-        if event.action != ACTION_RELEASED:
-            value -= 1
-            if value < 0: value=9
-            if value > 9: value=0
-            sense.show_letter(str(value))
-
-    def Select(event):
-        #rajoute le chiffre affiche sur le compteur au contenu du message si l'utilisateur clique sur le joystick
-        #demande une confirmation puis enregistre completement le message si le click est maintenu
-        global value
-        if event.action != ACTION_PRESSED:
-            if event.action == ACTION_RELEASED:
-                sense.show_letter(str(value), back_colour = green)
-                message.append(str(value))
-                sleep(0.2)
-                sense.show_letter(str(value))
-            else:
-                return True
-                print("2.5")
-
-
-    sense.stick.direction_up = Up
-    sense.stick.direction_down = Down
-    sense.stick.direction_left = Down
-    sense.stick.direction_right = Up
-    sense.stick.direction_middle = Select
-    pause()
-    """
 
     while joystick:
         event = sense.stick.wait_for_event()
         if event.action == "held" and event.direction == "middle":
             sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-            return True
+            if confirmer():
+                print("GyroIn")
+                return True
+            else:
+                call("sudo shutdown now", shell=True)
         if event.action == "pressed" and event.direction == "middle":
             sense.show_letter(str(value), back_colour = green)
             message.append(str(value))
@@ -144,14 +159,50 @@ def ReadInput():
             if value > 9: value=0
             sense.show_letter(str(value))
 
+def GyroIn():
+    while joystick:
+        sense.show_letter(str(action))
+        event = sense.stick.wait_for_event()
+        if event.action == "pressed" and even.direction == "middle":
+            x = round(sense.get_accelerometer_raw()["x"])
+            y = round(sense.get_accelerometer_raw()["y"])
+            z = round(sense.get_accelerometer_raw()["z"])
+            if y == 0 and x == 0 and z == 1 :
+                action = "Nothing"
+                liste_action.append(action)
+            if y == 0 and x == -1 and z == 0 :
+                action = "turnleft"
+                liste_action.append(action)
+            if y == 0 and x == -1 and z == -1 :
+                action = "flipleft"
+                liste_action.append(action)
+            if y == 0 and x == 1 and z == 0 :
+                action = "turnright"
+                liste_action.append(action)
+            if y == 0 and x == 1 and z == -1 :
+                action = "flipright"
+                liste_action.append(action)
+            if y == 1 and x == 0 and z == 0 :
+                action = "turnbackward"
+                liste_action.append(action)
+            if y == -1 and x == 0 and z == 0 :
+                action = "turnforward"
+                liste_action.append(action)
+            if y == 0 and x == 0 and z == -1 :
+                action = "flipbackward"
+                liste_action.append(action)
+        if event.action == "held" and event.direction == "middle":
+            sense.show_message("Are you sure ?", scroll_speed = 0.05)
+            confirmer()
+            if confirmer():
+                WriteAndEncodeHashing(liste_action)
+                #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
+                call("sudo shutdown now", shell=True)
+            else:
+                call("sudo shutdown now", shell=True)
 
-
-#si un message est present, demander le code a l'utilisateur, sinon il demande d'enregistrer un nouveau message et code
-print("1")
 if not ReadMessage():
-    print("2")
     if ReadInput():
-        print("4")
-    else:
-        print("5")
-        call("sudo shutdown now", shell=True)
+        WriteAndEncodeMessage(message)
+        GyroIn()
+
