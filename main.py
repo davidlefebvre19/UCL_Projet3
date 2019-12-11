@@ -102,20 +102,20 @@ def WriteAndEncodeHashing(code):
     f.close()
 
 def confirmer():
-    l = ["V","F"]
+    l = ["Y","N"]
     i = 0
-    sense.show_message("Confirm:", back_colour=green, scroll_speed=0.02)
+    sense.show_message("Sure?", back_colour=green, scroll_speed=0.03)
     sense.show_letter(l[i])
     while joystick:
         event = sense.stick.wait_for_event()
         if event.action == "pressed" and event.direction == "middle":
             if i == 0:
                 sense.show_letter("Y", back_colour = green)
-                print("yes")
+                print("confirmed")
                 return True
             else:
                 sense.show_letter("N", back_colour = red)
-                print("non")
+                print("non confirmed")
                 return False
         if event.action == "pressed" and event.direction == "left":
             i -= 1
@@ -318,7 +318,6 @@ if not ReadMessage():
                     erreurs += 1
                 elif GyroOut() == "retry":
                     pass
-
             DetruireLesPreuvesALerteRouge()
 
 else:
