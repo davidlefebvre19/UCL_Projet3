@@ -16,7 +16,6 @@ message = []
 i = 0
 joystick = True
 liste_action = []
-action = 0
 
 sense.clear()
 
@@ -160,6 +159,7 @@ def ReadInput():
             sense.show_letter(str(value))
 
 def GyroIn():
+    action = 0
     while joystick:
         sense.show_letter(str(action))
         event = sense.stick.wait_for_event()
