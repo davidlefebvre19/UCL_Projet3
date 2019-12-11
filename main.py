@@ -51,7 +51,8 @@ def encode(key , plain_text ): #Fonction chiffrant le message selon le chiffreme
         enc.append(enc_c)
     return ("".join(enc).encode()).decode()
 
-def hashing(string):
+def hashing(list):
+    string = ''.join(list)
     def to_32(value):
         value = value % (2 ** 32)
         if value >= 2**31:
@@ -95,7 +96,7 @@ def WriteAndEncodeHashing(code):
 def confirmer():
     l = ["V","F"]
     i = 0
-    sense.show_message("Confirm :", text_colour=orange)
+    sense.show_message("Confirm:", back_colour=green, scroll_speed=0.02)
     sense.show_letter(l[i])
     while joystick:
         event = sense.stick.wait_for_event()
