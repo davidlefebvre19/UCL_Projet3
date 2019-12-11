@@ -218,7 +218,7 @@ def GyroIn():
             if confirmer():
                 WriteAndEncodeHashing(liste_action)
                 #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
-                call("sudo shutdown now", shell=True)
+                return True
             else:
                 call("sudo shutdown now", shell=True)
 
@@ -270,6 +270,7 @@ def GyroOut():
         if event.action == "held" and event.direction == "middle":
             sense.show_message("Are you sure ?", scroll_speed = 0.05)
             if confirmer():
+                print(liste_action)
                 if CheckCode(liste_action):
                     return True
                 else:
@@ -298,7 +299,19 @@ erreurs = 0
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
-        GyroIn()
+        if GyroIn():
+            while erreurs < 2:
+                GyroOut()
+                if GyroOut() == True:
+                    Show_Decrypted()
+                    call("sudo shutdown now", shell=True)
+                elif GyroOut() == False:
+                    erreurs += 1
+                elif GyroOut() == "retry":
+                    pass
+
+            DetruireLesPreuvesALerteRouge()
+
 else:
     print("2")
     while erreurs < 2:
