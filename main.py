@@ -221,8 +221,94 @@ def GyroIn():
             else:
                 call("sudo shutdown now", shell=True)
 
+def CheckCode(liste_action):
+    uncheckedcode = hashing(liste_action)
+    f = open("message.txt", "r")
+    checkedcode = f.read()
+    if uncheckedcode == checkedcode:
+        return True
+    else:
+        return False
+
+def GyroOut():
+    liste_action = []
+    mouvement = 0
+    while joystick:
+        sense.show_letter(str(mouvement))
+        event = sense.stick.wait_for_event()
+        if event.action == "pressed" and event.direction == "middle":
+            x = round(sense.get_accelerometer_raw()["x"])
+            y = round(sense.get_accelerometer_raw()["y"])
+            z = round(sense.get_accelerometer_raw()["z"])
+            if y == 0 and x == 0 and z == 1 :
+                action = "Nothing"
+                liste_action.append(action)
+            if y == 0 and x == -1 and z == 0 :
+                action = "turnleft"
+                liste_action.append(action)
+            if y == 0 and x == -1 and z == -1 :
+                action = "flipleft"
+                liste_action.append(action)
+            if y == 0 and x == 1 and z == 0 :
+                action = "turnright"
+                liste_action.append(action)
+            if y == 0 and x == 1 and z == -1 :
+                action = "flipright"
+                liste_action.append(action)
+            if y == 1 and x == 0 and z == 0 :
+                action = "turnbackward"
+                liste_action.append(action)
+            if y == -1 and x == 0 and z == 0 :
+                action = "turnforward"
+                liste_action.append(action)
+            if y == 0 and x == 0 and z == -1 :
+                action = "flipbackward"
+                liste_action.append(action)
+            mouvement += 1
+            sense.show_letter(str(mouvement))
+        if event.action == "held" and event.direction == "middle":
+            sense.show_message("Are you sure ?", scroll_speed = 0.05)
+            if confirmer():
+                if CheckCode(liste_action):
+                    return True
+                else:
+                    return False
+            else:
+                i = "retry"
+                return i
+
+def Show_Decrypted():
+    f = open("message.txt", "r")
+    encrypted_message = f.read()
+    f.close()
+    message = decode(key, encrypted_message)
+    sense.show_message(message, text_colour=orange)
+
+def DetruireLesPreuvesALerteRouge():
+    sense.show_message("Autodestruction du code", text_colour=red)
+    call("sudo rm message.txt && rm code.txt", shell=True)
+    sense.show_message("Message detruit")
+    call("sudo shutdown now", shell=True)
+
+
+erreurs = 0
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         GyroIn()
+else:
+    while erreurs < 2:
+        GyroOut()
+        if GyroOut() == True:
+            Show_Decrypted()
+            call("sudo shutdown now", shell=True)
+        elif GyroOut() == False:
+            erreurs += 1
+        elif GyroOut() == "retry":
+            pass
+
+    DetruireLesPreuvesALerteRouge()
+
+
+
 
