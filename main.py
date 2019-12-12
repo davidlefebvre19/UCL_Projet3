@@ -146,7 +146,7 @@ def ReadInput():
     Si l'utilisateur confirme le message, le fichier GyroIn, permettant d'entrer un code, est appelle.
     """
     value = 0
-    sense.show_message("Hello Kormrade", text_colour=white, back_colour=red, scroll_speed=0.005)
+    sense.show_message("Welcome", text_colour=white, back_colour=red, scroll_speed=0.05)
     sense.show_letter(str(value))
 
     while joystick:
@@ -185,7 +185,7 @@ def ReadInput():
             sense.show_letter(str(value))
 
 def GyroIn():
-    sense.show_message("Create password", text_colour=orange, scroll_speed=0.04)
+    sense.show_message("Create password", text_colour=orange, scroll_speed=0.05)
     liste_action = []
     mouvement = 0
     while joystick:
@@ -243,7 +243,7 @@ def CheckCode(liste_action):
 
 liste_action_entree = []
 def GyroOut():
-    sense.show_message("Enter password", text_colour=orange, scroll_speed=0.03)
+    sense.show_message("Enter password", text_colour=orange, scroll_speed=0.05)
     mouvement = 0
     while joystick:
         sense.show_letter(str(mouvement))
@@ -305,7 +305,7 @@ erreurs = 0
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
-        sense.show_message("shutdown?", back_colour=white, scroll_speed=0.03)
+        sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
         if GyroIn():
             if confirmer():
                 call("sudo shutdown now", shell=True)
@@ -317,7 +317,7 @@ if not ReadMessage():
                         if CheckCode(liste_action_entree):
                             Show_Decrypted()
                         else:
-                            sense.show_message("incorrect", back_colour=red, scroll_speed=0.03)
+                            sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
                             erreurs += 1
                     elif GyroOut() == "retry":
                         pass
@@ -332,7 +332,7 @@ else:
             if CheckCode(liste_action_entree):
                 Show_Decrypted()
             else:
-                sense.show_message("incorrect", back_colour=red, scroll_speed=0.03)
+                sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
                 erreurs += 1
         elif GyroOut() == "retry":
             pass
