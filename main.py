@@ -254,25 +254,25 @@ def GyroOut():
             z = round(sense.get_accelerometer_raw()["z"])
             if y == 0 and x == 0 and z == 1 :
                 action = "1"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == -1 and z == 0 :
                 action = "2"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == -1 and z == -1 :
                 action = "3"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == 1 and z == 0 :
                 action = "4"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == 1 and z == -1 :
                 action = "5"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 1 and x == 0 and z == 0 :
                 action = "6"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == -1 and x == 0 and z == 0 :
                 action = "7"
-                liste_action.append(action)
+                liste_action_entree.append(action)
             if y == 0 and x == 0 and z == -1 :
                 action = "8"
                 liste_action_entree.append(action)
