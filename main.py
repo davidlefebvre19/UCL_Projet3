@@ -283,6 +283,7 @@ def GyroOut():
                 print(liste_action_entree, "out")
                 if CheckCode(liste_action_entree):
                     return True
+                else: return False
             else:
                 i = "retry"
                 return i
@@ -314,25 +315,27 @@ if not ReadMessage():
             else:
                 print("2")
                 while erreurs < 2:
-                    GyroOut()
                     if GyroOut() == True:
                         Show_Decrypted()
+                        call("sudo shutdown now", shell=True)
                     elif GyroOut() == "retry":
                         pass
-                    else:
+                    elif GyroOut() == False:
                         sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
+                        erreurs += 1
                 DetruireLesPreuvesALerteRouge()
 
 else:
     print("2")
     while erreurs < 2:
-        GyroOut()
         if GyroOut() == True:
             Show_Decrypted()
+            call("sudo shutdown now", shell=True)
         elif GyroOut() == "retry":
             pass
-        else:
+        elif GyroOut() == False:
             sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
+            erreurs += 1
     DetruireLesPreuvesALerteRouge()
 
 
