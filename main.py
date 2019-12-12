@@ -231,6 +231,7 @@ def GyroIn():
 
 def CheckCode(liste_action):
     uncheckedcode = hashing(liste_action)
+    print(uncheckedcode)
     f = open("code.txt", "r")
     checkedcode = f.read()
     print("good code: ",checkedcode," unchecked code: ",uncheckedcode)
@@ -278,11 +279,7 @@ def GyroOut():
         if event.action == "held" and event.direction == "middle" and event.action != ACTION_RELEASED:
             if confirmer():
                 print(liste_action_entree, "out")
-                if CheckCode(liste_action_entree):
-                    print("code ok")
-                    return True
-                else:
-                    return False
+                return True
             else:
                 i = "retry"
                 return i
@@ -308,16 +305,8 @@ if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         if GyroIn():
-            while erreurs < 2:
-                GyroOut()
-                if GyroOut() == True:
-                    Show_Decrypted()
-                    call("sudo shutdown now", shell=True)
-                elif GyroOut() == False:
-                    erreurs += 1
-                elif GyroOut() == "retry":
-                    pass
-            DetruireLesPreuvesALerteRouge()
+            GyroOut()
+            
 
 else:
     print("2")
