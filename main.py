@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from sense_hat import SenseHat, ACTION_PRESSED, ACTION_HELD, ACTION_RELEASED
 sense = SenseHat()
 sense.low_light = True
@@ -222,6 +223,7 @@ def GyroIn():
             mouvement += 1
             sense.show_letter(str(mouvement))
         if event.action == "held" and event.direction == "middle":
+            sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
             if confirmer():
                 print(liste_action, "in")
                 WriteAndEncodeHashing(liste_action)
