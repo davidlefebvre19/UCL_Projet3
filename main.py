@@ -185,6 +185,7 @@ def ReadInput():
             sense.show_letter(str(value))
 
 def GyroIn():
+    sense.show_message("Create password", text_colour=orange, scroll_speed=0.03)
     liste_action = []
     mouvement = 0
     while joystick:
@@ -240,8 +241,9 @@ def CheckCode(liste_action):
     else:
         return False
 
+liste_action_entree = []
 def GyroOut():
-    liste_action_entree = []
+    sense.show_message("Enter password", text_colour=orange, scroll_speed=0.03)
     mouvement = 0
     while joystick:
         sense.show_letter(str(mouvement))
@@ -294,29 +296,43 @@ def Show_Decrypted():
 def DetruireLesPreuvesALerteRouge():
     sense.show_message("Autodestruction du code", text_colour=red)
     call("sudo rm message.txt && rm code.txt", shell=True)
-    sense.show_message("Message detruit")
+    sense.show_message("Message detruit", text_colour=red)
     call("sudo shutdown now", shell=True)
 
 
-
-
 erreurs = 0
+
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
-        if GyroIn():
-            GyroOut()
-            
+        sense.show_message("shutdown?", back_colour=white, scroll_speed=0.03)
+        if confirmer():
+            call("sudo shutdown now", shell=True)
+        else:
+            print("2")
+            while erreurs < 2:
+                GyroOut()
+                if GyroOut() == True:
+                    if CheckCode(liste_action_entree):
+                        Show_Decrypted()
+                    else:
+                        sense.show_message("incorrect", back_colour=red, scroll_speed=0.03)
+                        erreurs += 1
+                elif GyroOut() == "retry":
+                    pass
+
+            DetruireLesPreuvesALerteRouge()
 
 else:
     print("2")
     while erreurs < 2:
         GyroOut()
         if GyroOut() == True:
-            Show_Decrypted()
-            call("sudo shutdown now", shell=True)
-        elif GyroOut() == False:
-            erreurs += 1
+            if CheckCode(liste_action_entree):
+                Show_Decrypted()
+            else:
+                sense.show_message("incorrect", back_colour=red, scroll_speed=0.03)
+                erreurs += 1
         elif GyroOut() == "retry":
             pass
 
