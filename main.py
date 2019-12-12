@@ -241,8 +241,8 @@ def CheckCode(liste_action):
     else:
         return False
 
-liste_action_entree = []
 def GyroOut():
+    liste_action_entree = []
     sense.show_message("Enter password", text_colour=orange, scroll_speed=0.05)
     mouvement = 0
     while joystick:
@@ -281,7 +281,8 @@ def GyroOut():
         if event.action == "held" and event.direction == "middle" and event.action != ACTION_RELEASED:
             if confirmer():
                 print(liste_action_entree, "out")
-                return True
+                if CheckCode(liste_action_entree):
+                    return True
             else:
                 i = "retry"
                 return i
@@ -314,14 +315,11 @@ if not ReadMessage():
                 while erreurs < 2:
                     GyroOut()
                     if GyroOut() == True:
-                        if CheckCode(liste_action_entree):
-                            Show_Decrypted()
-                        else:
-                            sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
-                            erreurs += 1
+                        Show_Decrypted()
                     elif GyroOut() == "retry":
                         pass
-
+                    else:
+                        sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
                 DetruireLesPreuvesALerteRouge()
 
 else:
@@ -329,14 +327,11 @@ else:
     while erreurs < 2:
         GyroOut()
         if GyroOut() == True:
-            if CheckCode(liste_action_entree):
-                Show_Decrypted()
-            else:
-                sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
-                erreurs += 1
+            Show_Decrypted()
         elif GyroOut() == "retry":
             pass
-
+        else:
+            sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
     DetruireLesPreuvesALerteRouge()
 
 
