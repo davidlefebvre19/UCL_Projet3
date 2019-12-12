@@ -306,6 +306,7 @@ erreurs = 0
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
+        sense.clear()
         sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
         if GyroIn():
             if confirmer():
