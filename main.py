@@ -104,7 +104,7 @@ def WriteAndEncodeHashing(code):
 def confirmer():
     l = ["Y","N"]
     i = 0
-    sense.show_message("Sure?", back_colour=green, scroll_speed=0.03)
+    sense.show_message("Sure?", back_colour=green, scroll_speed=0.04)
     sense.show_letter(l[i])
     while joystick:
         event = sense.stick.wait_for_event()
@@ -185,7 +185,7 @@ def ReadInput():
             sense.show_letter(str(value))
 
 def GyroIn():
-    sense.show_message("Create password", text_colour=orange, scroll_speed=0.03)
+    sense.show_message("Create password", text_colour=orange, scroll_speed=0.04)
     liste_action = []
     mouvement = 0
     while joystick:
@@ -306,22 +306,23 @@ if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         sense.show_message("shutdown?", back_colour=white, scroll_speed=0.03)
-        if confirmer():
-            call("sudo shutdown now", shell=True)
-        else:
-            print("2")
-            while erreurs < 2:
-                GyroOut()
-                if GyroOut() == True:
-                    if CheckCode(liste_action_entree):
-                        Show_Decrypted()
-                    else:
-                        sense.show_message("incorrect", back_colour=red, scroll_speed=0.03)
-                        erreurs += 1
-                elif GyroOut() == "retry":
-                    pass
+        if GyroIn():
+            if confirmer():
+                call("sudo shutdown now", shell=True)
+            else:
+                print("2")
+                while erreurs < 2:
+                    GyroOut()
+                    if GyroOut() == True:
+                        if CheckCode(liste_action_entree):
+                            Show_Decrypted()
+                        else:
+                            sense.show_message("incorrect", back_colour=red, scroll_speed=0.03)
+                            erreurs += 1
+                    elif GyroOut() == "retry":
+                        pass
 
-            DetruireLesPreuvesALerteRouge()
+                DetruireLesPreuvesALerteRouge()
 
 else:
     print("2")
