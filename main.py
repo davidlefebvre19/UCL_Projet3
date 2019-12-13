@@ -12,6 +12,12 @@ white = (255,255,255)
 red = (255,0,0)
 green = (0,255,0)
 orange = (128,255,0)
+yellow = (255, 255, 0)
+blue = (0, 0, 255)
+red = (255, 0, 0)
+nothing = (0,0,0)
+pink = (255,105, 180)
+mauve = (194,46,220)
 key = "louvain"
 message = []
 i = 0
@@ -19,6 +25,26 @@ joystick = True
 liste_action = []
 
 sense.clear()
+
+def XenonDuck():
+    G = green
+    R = red
+    W = white
+    O = nothing
+    B = blue
+    Y = yellow
+    M = mauve
+    logo = [
+    O, W, W, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    O, B, B, B, B, B, B, B,
+    O, B, B, W, B, B, B, W,
+    Y, Y, Y, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    ]
+    return logo
 
 def ReadMessage():
     """
@@ -306,6 +332,7 @@ def DetruireLesPreuvesALerteRouge():
 
 erreurs = 0
 
+XenonDuck()
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
