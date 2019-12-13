@@ -44,7 +44,7 @@ def XenonDuck():
     O, O, W, W, W, W, W, W,
     O, O, W, W, W, W, W, W,
     ]
-    return logo
+    sense.set_pixels(logo)
 
 def ReadMessage():
     """
@@ -333,11 +333,11 @@ def DetruireLesPreuvesALerteRouge():
 erreurs = 0
 
 XenonDuck()
+sense.clear()
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         if GyroIn():
-            sense.clear()
             sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
             if confirmer():
                 call("sudo shutdown now", shell=True)
