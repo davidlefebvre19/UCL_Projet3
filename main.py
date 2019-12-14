@@ -378,9 +378,10 @@ if not ReadMessage():
             if confirmer_wsure():
                 call("sudo shutdown now", shell=True)
             else:
-                print("2")
+                print("l'utilisateur doit enter le code")
                 while erreurs < 2:
-                    if GyroOut() == True:
+                    gyroout = GyroOut()
+                    if gyroout == True:
                         Show_Decrypted()
                         Show_Decrypted()
                         sense.show_message("delete message?", text_colour=black, back_colour=white, scroll_speed=0.05)
@@ -388,21 +389,22 @@ if not ReadMessage():
                             call("sudo rm code.txt && sudo rm message.txt && sudo shutdown now", shell=True)
                         else:
                             call("sudo shutdown now", shell=True)
-                    elif GyroOut() == "retry":
-                        pass
-                    elif GyroOut() == False:
+                    elif gyroout() == False:
                         sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
                         erreurs += 1
                 DetruireLesPreuvesALerteRouge()
 
 else:
-    print("2")
+    print("l'utilisateur doit enter le code")
     while erreurs < 2:
         if GyroOut() == True:
             Show_Decrypted()
-            call("sudo shutdown now", shell=True)
-        elif GyroOut() == "retry":
-            pass
+            Show_Decrypted()
+            sense.show_message("delete message?", text_colour=black, back_colour=white, scroll_speed=0.05)
+            if confirmer_wsure():
+                call("sudo rm code.txt && sudo rm message.txt && sudo shutdown now", shell=True)
+            else:
+                call("sudo shutdown now", shell=True)
         elif GyroOut() == False:
             sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
             erreurs += 1
