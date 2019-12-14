@@ -24,7 +24,6 @@ i = 0
 joystick = True
 liste_action = []
 
-sense.clear()
 
 def XenonDuck():
     G = green
@@ -132,6 +131,42 @@ def confirmer():
     l = ["Y","N"]
     i = 0
     sense.show_message("Sure?", back_colour=green, scroll_speed=0.04)
+    sense.show_letter(l[i])
+    while joystick:
+        event = sense.stick.wait_for_event()
+        if event.action == "pressed" and event.direction == "middle" and event.action != ACTION_RELEASED:
+            if i == 0:
+                sense.show_letter("Y", back_colour = green)
+                print("confirmed")
+                return True
+            else:
+                sense.show_letter("N", back_colour = red)
+                print("non confirmed")
+                return False
+        if event.action == "pressed" and event.direction == "left" and event.action != ACTION_RELEASED:
+            i -= 1
+            if i%2 == 0: i=0
+            if i%2 != 0: i=1
+            sense.show_letter(l[i])
+        if event.action == "pressed" and event.direction == "right" and event.action != ACTION_RELEASED:
+            i += 1
+            if i%2 == 0: i=0
+            if i%2 != 0: i=1
+            sense.show_letter(l[i])
+        if event.action == "pressed" and event.direction == "up" and event.action != ACTION_RELEASED:
+            i += 1
+            if i%2 == 0: i=0
+            if i%2 != 0: i=1
+            sense.show_letter(l[i])
+        if event.action == "pressed" and event.direction == "down" and event.action != ACTION_RELEASED:
+            i -= 1
+            if i%2 == 0: i=0
+            if i%2 != 0: i=1
+            sense.show_letter(l[i])
+
+def confirmer_wsure():
+    l = ["Y","N"]
+    i = 0
     sense.show_letter(l[i])
     while joystick:
         event = sense.stick.wait_for_event()
@@ -338,7 +373,7 @@ if not ReadMessage():
         if GyroIn():
             black = (0,0,0)
             sense.show_message("shutdown?", text_colour=black, back_colour=white, scroll_speed=0.05)
-            if confirmer():
+            if confirmer_wsure():
                 call("sudo shutdown now", shell=True)
             else:
                 print("2")
@@ -347,7 +382,7 @@ if not ReadMessage():
                         Show_Decrypted()
                         Show_Decrypted()
                         sense.show_message("delete message?", text_colour=black, back_colour=white, scroll_speed=0.05)
-                        if confirmer():
+                        if confirmer_wsure():
                             call("sudo rm code.txt && sudo rm message.txt && sudo shutdown now", shell=True)
                         else:
                             call("sudo shutdown now", shell=True)
