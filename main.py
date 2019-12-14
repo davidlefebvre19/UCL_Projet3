@@ -392,7 +392,7 @@ if not ReadMessage():
                         else:
                             XenonDuck()
                             call("sudo shutdown now", shell=True)
-                    elif gyroout() == False:
+                    elif gyroout == False:
                         sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
                         erreurs += 1
                 DetruireLesPreuvesALerteRouge()
