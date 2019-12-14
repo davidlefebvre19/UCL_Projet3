@@ -37,9 +37,6 @@ joystick = True
 #mot de passe, chaque position correspond a chiffre que l'on incremante a cette liste
 liste_action = []
 
-#compteur d'erreurs. Si il est superieur a 3, le message s'autodetruit
-erreurs = 0
-
 #logo
 def XenonDuck():
     G = green
@@ -307,6 +304,7 @@ def GyroIn():
                 #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
                 return True
             else:
+                XenonDuck()
                 call("sudo rm message.txt && shutdown now", shell=True)
 
 def CheckCode(liste_action):
@@ -382,6 +380,9 @@ def DetruireLesPreuvesALerteRouge():
     call("sudo shutdown now", shell=True)
 
 def ExpectPassword():
+    #compteur d'erreurs. Si il est superieur a 3, le message s'autodetruit
+    erreurs = 0
+    
     print("l'utilisateur doit enter le code")
     while erreurs < 2:
         gyroout = GyroOut()
