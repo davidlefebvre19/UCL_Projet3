@@ -249,7 +249,6 @@ def GyroIn():
             mouvement += 1
             sense.show_letter(str(mouvement))
         if event.action == "held" and event.direction == "middle":
-            sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
             if confirmer():
                 print(liste_action, "in")
                 WriteAndEncodeHashing(liste_action)
@@ -337,7 +336,7 @@ if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         if GyroIn():
-             sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
+            sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
             if confirmer():
                 call("sudo shutdown now", shell=True)
             else:
