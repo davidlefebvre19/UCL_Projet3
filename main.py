@@ -46,7 +46,8 @@ def XenonDuck():
     B = blue
     Y = yellow
     M = mauve
-    logo = [
+
+    Xenon = [
     O, W, W, W, W, W, W, W,
     O, O, W, W, W, W, W, W,
     O, O, W, W, W, W, W, W,
@@ -56,8 +57,46 @@ def XenonDuck():
     O, O, W, W, W, W, W, W,
     O, O, W, W, W, W, W, W,
     ]
+
     sense.set_pixels(logo)
     time.sleep(2)
+
+def EasterEgg():
+    G = green
+    R = red
+    W = white
+    O = nothing
+    B = blue
+    Y = yellow
+    M = mauve
+
+    XenonCoin = [
+    O, W, W, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    O, B, B, B, B, B, B, B,
+    Y, O, B, W, B, B, B, W,
+    O, Y, W, W, W, W, W, W,
+    O, R, Y, W, W, W, W, W,
+    O, Y, W, W, W, W, W, W,
+    Y, O, W, W, W, W, W, W,
+    ]
+
+    Xenon = [
+    O, W, W, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    O, B, B, B, B, B, B, B,
+    O, B, B, W, B, B, B, W,
+    Y, Y, Y, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    O, O, W, W, W, W, W, W,
+    ]
+
+    for i in range(3):
+        sense.set_pixels(Xenon)
+        time.sleep(1)
+        sense.set_pixels(XenonCoin)
+        time.sleep(1)
 
 def ReadMessage():
     """
@@ -228,12 +267,21 @@ def ReadInput():
     while joystick:
         event = sense.stick.wait_for_event()
         if event.action == "held" and event.direction == "middle" and event.action != ACTION_RELEASED:
-            sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
-            if confirmer():
-                print("GyroIn")
-                return True
+            if not message == [4,5,4]:   
+                sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+                if confirmer():
+                    print("GyroIn")
+                    return True
+                else:
+                    call("sudo shutdown now", shell=True)
             else:
-                call("sudo shutdown now", shell=True)
+                EasterEgg()
+                sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
+                if confirmer():
+                    print("GyroIn")
+                    return True
+                else:
+                    call("sudo shutdown now", shell=True)
         if event.action == "pressed" and event.direction == "middle" and event.action != ACTION_RELEASED:
             sense.show_letter(str(value), back_colour = green)
             message.append(str(value))
