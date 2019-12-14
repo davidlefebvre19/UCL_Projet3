@@ -382,9 +382,9 @@ def DetruireLesPreuvesALerteRouge():
 def ExpectPassword():
     #compteur d'erreurs. Si il est superieur a 3, le message s'autodetruit
     erreurs = 0
-    
+
     print("l'utilisateur doit enter le code")
-    while erreurs < 2:
+    while erreurs < 3:
         gyroout = GyroOut()
         if gyroout == True:
             Show_Decrypted()
