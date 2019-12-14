@@ -345,7 +345,12 @@ if not ReadMessage():
                 while erreurs < 2:
                     if GyroOut() == True:
                         Show_Decrypted()
-                        call("sudo shutdown now", shell=True)
+                        Show_Decrypted()
+                        sense.show_message("delete message?", text_colour=black, back_colour=white, scroll_speed=0.05)
+                        if confirmer():
+                            call("sudo rm code.txt && rm message.txt && shutdown now", shell=True)
+                        else:
+                            call("sudo shutdown now", shell=True)
                     elif GyroOut() == "retry":
                         pass
                     elif GyroOut() == False:
