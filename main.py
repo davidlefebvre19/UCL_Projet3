@@ -336,7 +336,8 @@ if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         if GyroIn():
-            sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
+            black = (0,0,0)
+            sense.show_message("shutdown?", text_colour=black, back_colour=white, scroll_speed=0.05)
             if confirmer():
                 call("sudo shutdown now", shell=True)
             else:
