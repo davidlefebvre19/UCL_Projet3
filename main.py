@@ -360,9 +360,9 @@ def Show_Decrypted():
     sense.show_message(message, text_colour=orange)
 
 def DetruireLesPreuvesALerteRouge():
-    sense.show_message("Autodestruction du code", text_colour=red)
+    sense.show_message("Autodestruction du code", back_colour=red, scroll_speed=0.04)
     call("sudo rm message.txt && rm code.txt", shell=True)
-    sense.show_message("Message detruit", text_colour=red)
+    sense.show_message("Message detruit", back_colour=red, scroll_speed=0.04)
     XenonDuck()
     call("sudo shutdown now", shell=True)
 
@@ -399,7 +399,7 @@ if not ReadMessage():
 else:
     sense.show_message("Message found", text_colour=blue, scroll_speed=0.05)
     print("l'utilisateur doit enter le code")
-    while erreurs < 2:
+    while erreurs < 3:
         gyroout = GyroOut()
         if gyroout == True:
             Show_Decrypted()
