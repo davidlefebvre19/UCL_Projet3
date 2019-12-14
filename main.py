@@ -449,7 +449,7 @@ def ExpectPassword():
             erreurs += 1
     DetruireLesPreuvesALerteRouge()
 
-XenonDuck()
+EasterEgg()
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
