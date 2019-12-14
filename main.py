@@ -44,6 +44,7 @@ def XenonDuck():
     O, O, W, W, W, W, W, W,
     ]
     sense.set_pixels(logo)
+    time.sleep(3)
 
 def ReadMessage():
     """
