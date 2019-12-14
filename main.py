@@ -45,7 +45,7 @@ def XenonDuck():
     O, O, W, W, W, W, W, W,
     ]
     sense.set_pixels(logo)
-    time.sleep(3)
+    time.sleep(2)
 
 def ReadMessage():
     """
@@ -363,6 +363,7 @@ def DetruireLesPreuvesALerteRouge():
     sense.show_message("Autodestruction du code", text_colour=red)
     call("sudo rm message.txt && rm code.txt", shell=True)
     sense.show_message("Message detruit", text_colour=red)
+    XenonDuck()
     call("sudo shutdown now", shell=True)
 
 
@@ -374,7 +375,7 @@ if not ReadMessage():
         WriteAndEncodeMessage(message)
         if GyroIn():
             black = (0,0,0)
-            sense.show_message("shutdown?", text_colour=black, back_colour=white, scroll_speed=0.05)
+            sense.show_message("shutdown?", text_colour=blue, scroll_speed=0.05)
             if confirmer_wsure():
                 call("sudo shutdown now", shell=True)
             else:
@@ -384,31 +385,37 @@ if not ReadMessage():
                     if gyroout == True:
                         Show_Decrypted()
                         Show_Decrypted()
-                        sense.show_message("delete message?", text_colour=black, back_colour=white, scroll_speed=0.05)
+                        sense.show_message("delete message?", text_colour=blue, scroll_speed=0.05)
                         if confirmer_wsure():
+                            XenonDuck()
                             call("sudo rm code.txt && sudo rm message.txt && sudo shutdown now", shell=True)
                         else:
+                            XenonDuck()
                             call("sudo shutdown now", shell=True)
                     elif gyroout() == False:
                         sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
                         erreurs += 1
                 DetruireLesPreuvesALerteRouge()
-
 else:
+    sense.show_message("Message found", text_colour=blue, scroll_speed=0.05)
     print("l'utilisateur doit enter le code")
     while erreurs < 2:
-        if GyroOut() == True:
+        gyroout = GyroOut()
+        if gyroout == True:
             Show_Decrypted()
             Show_Decrypted()
-            sense.show_message("delete message?", text_colour=black, back_colour=white, scroll_speed=0.05)
+            sense.show_message("delete message?", text_colour=blue, scroll_speed=0.05)
             if confirmer_wsure():
+                XenonDuck()
                 call("sudo rm code.txt && sudo rm message.txt && sudo shutdown now", shell=True)
             else:
+                XenonDuck()
                 call("sudo shutdown now", shell=True)
-        elif GyroOut() == False:
+        elif gyroout() == False:
             sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
             erreurs += 1
     DetruireLesPreuvesALerteRouge()
+
 
 
 
