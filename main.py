@@ -256,7 +256,7 @@ def GyroIn():
                 #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
                 return True
             else:
-                call("sudo shutdown now", shell=True)
+                call("sudo rm message.txt && shutdown now", shell=True)
 
 def CheckCode(liste_action):
     uncheckedcode = hashing(liste_action)
@@ -333,12 +333,11 @@ def DetruireLesPreuvesALerteRouge():
 erreurs = 0
 
 XenonDuck()
-sense.clear()
 if not ReadMessage():
     if ReadInput():
         WriteAndEncodeMessage(message)
         if GyroIn():
-            sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
+             sense.show_message("shutdown?", back_colour=white, scroll_speed=0.05)
             if confirmer():
                 call("sudo shutdown now", shell=True)
             else:
