@@ -267,7 +267,7 @@ def ReadInput():
     while joystick:
         event = sense.stick.wait_for_event()
         if event.action == "held" and event.direction == "middle" and event.action != ACTION_RELEASED:
-            if not message == [4,5,4]:   
+            if not message == ["4","5","4"]:   
                 sense.show_message(message, text_colour = white, back_colour = green, scroll_speed=0.05)
                 if confirmer():
                     print("GyroIn")
