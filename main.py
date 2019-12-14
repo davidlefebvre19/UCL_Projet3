@@ -6,9 +6,8 @@ import time
 from time import sleep
 from signal import pause
 from subprocess import call
-#9Q4hr6iM
 
-code_in_rpi = False
+#couleurs utilisees pour le logo et l'interface
 white = (255,255,255)
 red = (255,0,0)
 green = (0,255,0)
@@ -19,13 +18,29 @@ red = (255, 0, 0)
 nothing = (0,0,0)
 pink = (255,105, 180)
 mauve = (194,46,220)
+
+#True si message present
+code_in_rpi = False
+
+#clef de vigenere
 key = "louvain"
+
+#message secret 
 message = []
+
+#variable de la fonction confirmer
 i = 0
+
+#ecoute les actions du joystick si true
 joystick = True
+
+#mot de passe, chaque position correspond a chiffre que l'on incremante a cette liste
 liste_action = []
 
+#compteur d'erreurs. Si il est superieur a 3, le message s'autodetruit
+erreurs = 0
 
+#logo
 def XenonDuck():
     G = green
     R = red
@@ -366,40 +381,9 @@ def DetruireLesPreuvesALerteRouge():
     XenonDuck()
     call("sudo shutdown now", shell=True)
 
-
-erreurs = 0
-
-XenonDuck()
-if not ReadMessage():
-    if ReadInput():
-        WriteAndEncodeMessage(message)
-        if GyroIn():
-            black = (0,0,0)
-            sense.show_message("shutdown?", text_colour=blue, scroll_speed=0.05)
-            if confirmer_wsure():
-                call("sudo shutdown now", shell=True)
-            else:
-                print("l'utilisateur doit enter le code")
-                while erreurs < 2:
-                    gyroout = GyroOut()
-                    if gyroout == True:
-                        Show_Decrypted()
-                        Show_Decrypted()
-                        sense.show_message("delete message?", text_colour=blue, scroll_speed=0.05)
-                        if confirmer_wsure():
-                            XenonDuck()
-                            call("sudo rm code.txt && sudo rm message.txt && sudo shutdown now", shell=True)
-                        else:
-                            XenonDuck()
-                            call("sudo shutdown now", shell=True)
-                    elif gyroout == False:
-                        sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
-                        erreurs += 1
-                DetruireLesPreuvesALerteRouge()
-else:
-    sense.show_message("Message found", text_colour=blue, scroll_speed=0.05)
+def ExpectPassword():
     print("l'utilisateur doit enter le code")
-    while erreurs < 3:
+    while erreurs < 2:
         gyroout = GyroOut()
         if gyroout == True:
             Show_Decrypted()
@@ -411,10 +395,24 @@ else:
             else:
                 XenonDuck()
                 call("sudo shutdown now", shell=True)
-        elif gyroout() == False:
+        elif gyroout == False:
             sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
             erreurs += 1
     DetruireLesPreuvesALerteRouge()
+
+XenonDuck()
+if not ReadMessage():
+    if ReadInput():
+        WriteAndEncodeMessage(message)
+        if GyroIn():
+            black = (0,0,0)
+            sense.show_message("shutdown?", text_colour=blue, scroll_speed=0.05)
+            if confirmer_wsure():
+                call("sudo shutdown now", shell=True)
+            else:
+                ExpectPassword()
+else:
+    ExpectPassword()
 
 
 
