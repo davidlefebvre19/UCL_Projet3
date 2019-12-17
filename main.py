@@ -142,6 +142,12 @@ def WriteAndEncodeHashing(code):
     f.close()
 
 def confirmer():
+	"""
+	Affiche sur la matrix du sensehat un message qui demande a l'utilisateur de confirmer son choix
+	Ensuite celui-ci doit selectionner entre Y ou N a l'aide du joystick
+	return: (Boolean) True Si l'utilisateur choisit Y
+	return: (Boolean) False si l'utilisateur choisit N
+	"""
     l = ["Y","N"]
     i = 0
     sense.show_message("Sure?", back_colour=green, scroll_speed=0.04)
@@ -179,6 +185,11 @@ def confirmer():
             sense.show_letter(l[i])
 
 def confirmer_wsure():
+	"""
+	L'utilisateur doit selectionner entre Y ou N a l'aide du joystick (aucun message n'est affiche a l'ecran a part Y/N)
+	return: (Boolean) True Si l'utilisateur choisit Y
+	return: (Boolean) False si l'utilisateur choisit N
+	"""
     l = ["Y","N"]
     i = 0
     sense.show_letter(l[i])
@@ -261,8 +272,16 @@ def ReadInput():
             sense.show_letter(str(value))
 
 def GyroIn():
+	"""
+	Permet de creer un mot de passe a l'aide de l'accelerometere
+	L'utilisateur doit confirmer chaque position en pressant le joystick
+	L'utilisateur confirme le code en maintenant le click du joystick
+	Cette fonction fais aussi appel a la fonction confirmer() pour etre sur du choix de l'utilisateur
+	Elle fait egalement appel a la fonction hashing pour hasher le code et l'enregistrer sur un fichier .txt
+	return: (Boolean) True si l'utilisateur confirme le code, le RPI s'etteinds si l'utilisateur ne souhaite pas enregistrer le code
+	"""
     sense.show_message("Create password", text_colour=orange, scroll_speed=0.05)
-    liste_action = []
+    movements = []
     mouvement = 0
     while joystick:
         sense.show_letter(str(mouvement))
@@ -273,42 +292,49 @@ def GyroIn():
             z = round(sense.get_accelerometer_raw()["z"])
             if y == 0 and x == 0 and z == 1 :
                 action = "1"
-                liste_action.append(action)
+                movements.append(action)
             if y == 0 and x == -1 and z == 0 :
                 action = "2"
-                liste_action.append(action)
+                movements.append(action)
             if y == 0 and x == -1 and z == -1 :
                 action = "3"
-                liste_action.append(action)
+                movements.append(action)
             if y == 0 and x == 1 and z == 0 :
                 action = "4"
-                liste_action.append(action)
+                movements.append(action)
             if y == 0 and x == 1 and z == -1 :
                 action = "5"
-                liste_action.append(action)
+                movements.append(action)
             if y == 1 and x == 0 and z == 0 :
                 action = "6"
-                liste_action.append(action)
+                movements.append(action)
             if y == -1 and x == 0 and z == 0 :
                 action = "7"
-                liste_action.append(action)
+                movements.append(action)
             if y == 0 and x == 0 and z == -1 :
                 action = "8"
-                liste_action.append(action)
+                movements.append(action)
             mouvement += 1
             sense.show_letter(str(mouvement))
         if event.action == "held" and event.direction == "middle":
             if confirmer():
-                print(liste_action, "in")
-                WriteAndEncodeHashing(liste_action)
+                print(movements, "in")
+                WriteAndEncodeHashing(movements)
                 #le RPI est eteinds qu'elle que soit la decision de l'utilisateur
                 return True
             else:
                 XenonDuck()
                 call("sudo rm message.txt && shutdown now", shell=True)
 
-def CheckCode(liste_action):
-    uncheckedcode = hashing(liste_action)
+def CheckCode(movements):
+	"""
+	Recupere la liste du code a tester et le hashe.
+	Ouvre ensuite le fichier code.txt contenant le code correct hashe
+	Compare les deux codes hashes
+	return: (Boolean) True si le code est correct
+	return: (Boolean) False si ne l'est pas
+	"""
+    uncheckedcode = hashing(movements)
     print(uncheckedcode)
     f = open("code.txt", "r")
     checkedcode = f.read()
@@ -319,6 +345,15 @@ def CheckCode(liste_action):
         return False
 
 def GyroOut():
+	"""
+	Permet de creer un mot de passe a l'aide de l'accelerometere
+	L'utilisateur doit confirmer chaque position en pressant le joystick
+	L'utilisateur confirme le code en maintenant le click du joystick
+	Cette fonction fais aussi appel a la fonction confirmer() pour etre sur du choix de l'utilisateur
+	Elle fait egalement appel a la fonction CheckCode pour verifier l'exactitude du mot de passe entre
+	return: (Boolean) True si l'utilisateur confirme le code, le RPI s'etteinds si l'utilisateur ne souhaite pas enregistrer le code
+	"""
+
     liste_action_entree = []
     sense.show_message("Enter password", text_colour=orange, scroll_speed=0.05)
     mouvement = 0
@@ -366,6 +401,9 @@ def GyroOut():
                 return i
 
 def Show_Decrypted():
+	"""
+	Affiche sur la matrix du sensehat le message secret apres l'avoir decrypte
+	"""
     f = open("message.txt", "r")
     encrypted_message = f.read()
     f.close()
@@ -373,6 +411,11 @@ def Show_Decrypted():
     sense.show_message(message, text_colour=orange)
 
 def DetruireLesPreuvesALerteRouge():
+	"""
+	Cette fonction est appellee si l'utilisateur se trompe 3x de code
+	Elle detruit le fichier message.txt et code.txt tout en informant l'utilisateur de leurs suppression
+	Le RPI s'eteind apres la suppression des fichiers
+	"""
     sense.show_message("Autodestruction du code", back_colour=red, scroll_speed=0.04)
     call("sudo rm message.txt && rm code.txt", shell=True)
     sense.show_message("Message detruit", back_colour=red, scroll_speed=0.04)
@@ -380,6 +423,13 @@ def DetruireLesPreuvesALerteRouge():
     call("sudo shutdown now", shell=True)
 
 def ExpectPassword():
+	"""
+	Cette fonction permet de faire le liens entre toutes les fonctions pour entrer un code a tester et verifier si il est correct
+	Cette fonction efface le message et le code si l'utilisateur se trompe plus de 3 fois
+
+	"""
+
+
     #compteur d'erreurs. Si il est superieur a 3, le message s'autodetruit
     erreurs = 0
 
@@ -400,6 +450,7 @@ def ExpectPassword():
             sense.show_message("incorrect", back_colour=red, scroll_speed=0.05)
             erreurs += 1
     DetruireLesPreuvesALerteRouge()
+
 
 XenonDuck()
 if not ReadMessage():
